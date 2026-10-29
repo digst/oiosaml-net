@@ -1,0 +1,31 @@
+<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <!-- The three libraries are the NuGet packages. The version comes from the release tag (see docs/releasing.md). -->
+    <PropertyGroup>
+        <IsPackable>true</IsPackable>
+        <Company>Digitaliseringsstyrelsen</Company>
+        <Product>DK.Gov.Oio.Saml</Product>
+        <Copyright>Digitaliseringsstyrelsen</Copyright>
+        <PackageProjectUrl>https://github.com/digst/oiosaml-net</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageTags>saml saml2 oiosaml nemlogin mitid sso service-provider</PackageTags>
+        <PackageReleaseNotes>https://github.com/digst/oiosaml-net/releases</PackageReleaseNotes>
+        <!-- SourceLink (built into the .NET SDK) points the debugger at the exact commit on GitHub. -->
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <!-- The code has no XML documentation comments; the docs folder is the documentation. -->
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)PACKAGE.md" Pack="true" PackagePath="README.md" Visible="false" />
+    </ItemGroup>
+</Project>

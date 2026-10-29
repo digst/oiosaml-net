@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Description>ASP.NET MVC 5 and OWIN integration of DK.Gov.Oio.Saml for .NET Framework 4.7.2 or later: the /auth endpoints, the OWIN login cookie with NemLog-in's session limits, and IdP certificate monitoring. The successor of dk.nita.saml20.</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Web" />
+      <PackageReference Include="Microsoft.AspNet.Mvc" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+      <PackageReference Include="Microsoft.Extensions.Logging" />
+      <PackageReference Include="Microsoft.Owin.Host.SystemWeb" />
+      <PackageReference Include="Microsoft.Owin.Security.Cookies" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="../DK.Gov.Oio.Saml/DK.Gov.Oio.Saml.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <InternalsVisibleTo Include="DK.Gov.Oio.Saml.AspNet.Tests" />
+    </ItemGroup>
+
+</Project>

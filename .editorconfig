@@ -1,0 +1,17 @@
+root = true
+
+[*.cs]
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
+dotnet_diagnostic.IDE0040.severity = warning
+
+# var wherever the language allows it.
+csharp_style_var_for_built_in_types = true:warning
+csharp_style_var_when_type_is_apparent = true:warning
+csharp_style_var_elsewhere = true:warning
+dotnet_diagnostic.IDE0007.severity = warning
+
+# static wherever a member uses no instance state.
+dotnet_diagnostic.CA1822.severity = warning
+
+# Unused using directives; reported only by a build with -p:CheckUnusedUsings=true (see Directory.Build.props).
+dotnet_diagnostic.IDE0005.severity = warning

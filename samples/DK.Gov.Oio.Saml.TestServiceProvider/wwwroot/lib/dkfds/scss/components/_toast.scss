@@ -1,0 +1,117 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+
+$toast-backgrounds: (
+    success: vars.$toast-success-background-color,
+    warning: vars.$toast-warning-background-color,
+    error: vars.$toast-error-background-color,
+    info: vars.$toast-info-background-color
+);
+
+$toast-icon-names: (
+    success: vars.$toast-success-icon,
+    warning: vars.$toast-warning-icon,
+    error: vars.$toast-error-icon,
+    info: vars.$toast-info-icon
+);
+
+$toast-icon-backgrounds: (
+    success: vars.$toast-success-color,
+    warning: vars.$toast-warning-color,
+    error: vars.$toast-error-color,
+    info: vars.$toast-info-color
+);
+
+.toast-container {
+    position: fixed;
+    inset: func.units(4) func.units(4) auto; // top | left and right | bottom
+    z-index: vars.$zindex-toast-container;
+
+    @include mixins.media-breakpoint-up(md) {
+        inset: func.units(8) func.units(4) auto auto; // top | right | bottom | left
+    }
+}
+
+.toast {
+    width: 100%;
+    max-width: 100%;
+    background-color: func.color(vars.$toast-default-background-color);
+    display: flex;
+    transition: opacity .15s linear;
+    margin-bottom: func.units(4);
+    box-shadow: func.shadow('heavy');
+    border-radius: func.border-radius('medium');
+
+    &:not(.show) {
+        opacity: 0;
+    }
+
+    &.hide {
+        display: none;
+    }
+
+    @include mixins.media-breakpoint-up(md) {
+        width: 464px;
+    }
+
+    .toast-icon {
+        align-items: center;
+        display: flex;
+        padding-left: calc(#{func.units(4)} + #{func.units(5)});
+        padding-right: func.units(4);
+        background-size: func.units(505);
+        background-repeat: no-repeat;
+        background-position: center center;
+        border-top-left-radius: func.border-radius('medium');
+        border-bottom-left-radius: func.border-radius('medium');
+    }
+
+    .toast-message {
+        padding: func.units(4);
+        position: relative;
+        width: 100%;
+
+        .toast-close {
+            position: absolute;
+            top: func.units(4);
+            right: func.units(4);
+            text-indent: -9999px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            @include mixins.add-background-svg('close');
+            @include mixins.button-unstyled;
+        }
+
+        p {
+            margin: 0;
+            word-break: break-word;
+
+            &:first-of-type {
+                margin-right: func.units(6);
+            }
+        }
+    }
+}
+
+@each $name,
+$bgcolor in $toast-backgrounds {
+    .toast-#{$name} {
+        background-color: func.color($bgcolor);
+    }
+}
+
+@each $name,
+$iconcolor in $toast-icon-backgrounds {
+    .toast-#{$name} .toast-icon {
+        background-color: func.color($iconcolor);
+    }
+}
+
+@each $name,
+$iconname in $toast-icon-names {
+    .toast-#{$name} .toast-icon {
+        background-image: url(vars.$icons-folder-path + $iconname + '.svg');
+    }
+}

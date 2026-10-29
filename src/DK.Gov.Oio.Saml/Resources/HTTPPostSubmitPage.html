@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<body>
+<noscript>
+    <p>
+        <strong>Note:</strong> Since your browser does not support JavaScript, you must
+        press the Continue button once to proceed.
+    </p>
+</noscript>
+<form action="{LOCATION}" method="post">
+    <div>
+        {RELAYSTATEINPUT}
+        <input type="hidden" name="{MESSAGETYPE}" value="{MESSAGE}" />
+    </div>
+    <noscript>
+        <div>
+            <input type="submit" value="Continue" />
+        </div>
+    </noscript>
+</form>
+</body>
+<script>function p() { if(typeof(sessionStorage) != 'undefined') { sessionStorage.clear(); } document.forms[0].submit(); } if (document.readyState === 'complete' || document.readyState === 'interactive') { setTimeout(p, 1); } else { window.addEventListener('DOMContentLoaded', p) }</script>
+</html>

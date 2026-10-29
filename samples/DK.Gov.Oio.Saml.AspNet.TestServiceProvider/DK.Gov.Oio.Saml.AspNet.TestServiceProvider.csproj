@@ -1,0 +1,49 @@
+<Project Sdk="MSBuild.SDK.SystemWeb/4.0.107">
+
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <!-- The SDK's default compiler packages are older than ours; views compile with the Roslyn from DotNetCompilerPlatform below. -->
+        <ExcludeSDKDefaultPackages>true</ExcludeSDKDefaultPackages>
+        <SetRoslynToolPath>false</SetRoslynToolPath>
+        <GeneratedBindingRedirectsAction>Overwrite</GeneratedBindingRedirectsAction>
+        <!-- The SDK names it web.config, which a case-sensitive file system doesn't find. -->
+        <AppConfig>Web.config</AppConfig>
+        <!-- Precompiling views needs the AspNetCompiler task of Visual Studio's MSBuild; views compile at runtime instead. -->
+        <MvcBuildViews>false</MvcBuildViews>
+    </PropertyGroup>
+
+    <!-- Visual Studio's MSBuild has the web application targets (publishing, IIS Express); dotnet build, also on Linux, has not and doesn't need them. -->
+    <PropertyGroup>
+        <_VisualStudioWebApplicationTargets>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets</_VisualStudioWebApplicationTargets>
+        <WebApplicationsTargetPath Condition="!Exists('$(_VisualStudioWebApplicationTargets)')">$(MSBuildThisFileDirectory)NoWebApplication.targets</WebApplicationsTargetPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="../../src/DK.Gov.Oio.Saml.AspNet/DK.Gov.Oio.Saml.AspNet.csproj" />
+    </ItemGroup>
+
+    <!-- IIS serves the project folder, so the ASP.NET Core sample's certificate, IdP metadata and stylesheet are copied in rather than duplicated in git. -->
+    <PropertyGroup>
+      <SharedSampleDir>../DK.Gov.Oio.Saml.TestServiceProvider/</SharedSampleDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <SharedCertificate Include="$(SharedSampleDir)certificates/**" />
+      <SharedIdpMetadata Include="$(SharedSampleDir)idp-metadata/**" />
+      <SharedStylesheet Include="$(SharedSampleDir)wwwroot/lib/dkfds/**" Exclude="$(SharedSampleDir)wwwroot/lib/dkfds/scss/**" />
+    </ItemGroup>
+    <Target Name="CopySharedSampleFiles" BeforeTargets="Build">
+      <Copy SourceFiles="@(SharedCertificate)" DestinationFolder="certificates/%(RecursiveDir)" SkipUnchangedFiles="true" />
+      <Copy SourceFiles="@(SharedIdpMetadata)" DestinationFolder="idp-metadata/%(RecursiveDir)" SkipUnchangedFiles="true" />
+      <Copy SourceFiles="@(SharedStylesheet)" DestinationFolder="lib/dkfds/%(RecursiveDir)" SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>

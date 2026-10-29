@@ -1,0 +1,2 @@
+<!-- Stands in for Visual Studio's Microsoft.WebApplication.targets, which the dotnet SDK does not ship (see the .csproj). -->
+<Project />

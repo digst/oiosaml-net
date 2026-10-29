@@ -1,0 +1,119 @@
+@use "sass:map" as map;
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+
+
+// basic container
+.container {
+  @include mixins.grid-container;
+  @include mixins.grid-container-max-widths;
+}
+
+.container[class*='w-']{
+  max-width: inherit !important; // undo max-width
+}
+
+// basic row...
+.row {
+  @include mixins.grid-row;
+
+  // row with no column gaps.
+  &.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+  
+    > .col,
+    > [class*="col-"] {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }  
+
+  &.row-bordered{
+    border-top: func.border('low-contrast');
+    padding-top: func.units(4);
+    padding-bottom: func.units(4);
+    line-height: func.units(5, 'rem');
+    &:last-of-type{
+      border-bottom: func.border('low-contrast');
+    }
+  }
+}
+
+// Common properties for all breakpoints
+%grid-column {
+  position: relative;
+  width: 100%;
+  min-height: 1px; // Prevent columns from collapsing when empty
+  padding-right: (vars.$grid-gutter-width * 0.5);
+  padding-left: (vars.$grid-gutter-width * 0.5);
+}
+
+@each $breakpoint in map.keys(vars.$grid-breakpoints) {
+  $mq-key: mixins.breakpoint-infix($breakpoint, vars.$grid-breakpoints);
+
+  // Allow columns to stretch full width below their breakpoints
+  @for $i from 1 through vars.$grid-columns {
+    .col#{$mq-key}-#{$i} {
+      @extend %grid-column;
+    }
+  }
+  .col#{$mq-key},
+  .col#{$mq-key}-auto {
+    @extend %grid-column;
+  }
+
+  @include mixins.media-breakpoint-up($breakpoint, vars.$grid-breakpoints) {
+    // Provide basic `.col-{bp}` classes for equal-width flexbox columns
+    .col#{$mq-key} {
+      flex-basis: 0;
+      flex-grow: 1;
+      max-width: 100%;
+    }
+    .col#{$mq-key}-auto {
+      flex: 0 0 auto;
+      width: auto;
+      max-width: none; // Reset earlier grid tiers
+    }
+
+    @for $i from 1 through vars.$grid-columns {
+      .col#{$mq-key}-#{$i} {
+        @include mixins.grid-col($i, vars.$grid-columns);
+      }
+    }
+
+    .order#{$mq-key}-first {
+      order: -1;
+    }
+
+    @for $i from 1 through vars.$grid-columns {
+      .order#{$mq-key}-#{$i} {
+        order: $i;
+      }
+    }
+  }
+}
+
+
+// basic offsets
+@for $i from 0 through (vars.$grid-columns - 1) { // -1 to prevent offset-12
+  @if not ($i == 0) { // Avoid emitting useless .offset-0
+    .offset-#{$i} {
+      @include mixins.grid-offset($i, vars.$grid-columns);
+    }
+  }
+}
+// responsive offsets
+@each $breakpoint in map.keys(vars.$grid-breakpoints) {
+  $mq-key: mixins.breakpoint-infix($breakpoint, vars.$grid-breakpoints);
+  @include mixins.media-breakpoint-up($breakpoint, vars.$grid-breakpoints) {
+    @for $i from 0 through (vars.$grid-columns - 1) { // -1 to prevent offset-12
+      @if not ($mq-key == "" and $i == 0) { // Avoid emitting useless .offset-0
+        .offset#{$mq-key}-#{$i} {
+          @include mixins.grid-offset($i, vars.$grid-columns);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" />
+  </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="../../src/DK.Gov.Oio.Saml.AspNetCore/DK.Gov.Oio.Saml.AspNetCore.csproj" />
+      <ProjectReference Include="../../src/DK.Gov.Oio.Saml/DK.Gov.Oio.Saml.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="idp-metadata\**\*.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="certificates\serviceprovider.p12">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>

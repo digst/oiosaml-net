@@ -1,0 +1,29 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+@use "../placeholder-selectors";
+
+.form-select {
+    @extend %basic-form-element;
+    background-color: func.color(vars.$select-background-color);
+    @include mixins.add-background-svg('chevron-down');
+    background-position: calc(100% - 10px);
+    background-size: func.units(5, 'rem');
+    border: func.border(vars.$select-border);
+    color: func.color(vars.$select-text-color);
+    font-size: func.font-size(vars.$select-font-size);
+    line-height: func.units(vars.$select-line-height, 'rem');
+    height: calc(#{func.units(vars.$select-line-height, 'rem')} + (8px * 2));
+    padding: calc(8px - #{func.border-width(vars.$select-border)}) calc(16px - #{func.border-width(vars.$select-border)});
+    padding-right: func.units(6);
+
+    &::-ms-expand {
+        display: none;
+    }
+
+    &:disabled {
+        background-color: func.color(vars.$input-disabled-background-color);
+        color: func.color(vars.$input-disabled-text-color);
+        cursor: not-allowed;
+    }
+}

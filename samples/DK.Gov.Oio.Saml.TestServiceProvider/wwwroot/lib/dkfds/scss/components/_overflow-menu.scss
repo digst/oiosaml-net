@@ -1,0 +1,318 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+
+.overflow-menu + h1 {
+    margin-top: 0;
+}
+
+.overflow-menu {
+    display: block;
+    position: relative;
+    width: 100%;
+
+
+    @include mixins.media-breakpoint-up(md) {
+        width: auto;
+        display: inline-block;
+    }
+
+    .button-overflow-menu {
+        background-color: func.color('transparent');
+        border: 0;
+        border-radius: 0;
+        font-weight: func.font-weight("normal");
+        margin: 0;
+        text-align: left;
+        min-height: 40px;
+        min-width: 40px;
+        padding: 8px 0;
+        align-items: center;
+        justify-content: center;
+        color: func.color(vars.$overflow-menu-button-text-color);
+        position: relative;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+            background-color: func.color('transparent');
+            color: inherit;
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        // below: arrow with border
+        &::after,
+        &::before {
+            display: none;
+            left: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            z-index: vars.$zindex-overflow-arrow;
+            bottom: calc((vars.$overflow-menu-dropdown-distance * -1) - 1px);
+        }
+
+        &::after {
+            border-bottom-color: func.color(vars.$overflow-menu-content-background-color);
+            border-width: calc(#{vars.$overflow-menu-arrow-size} - 1px);
+            margin-left: calc((#{vars.$overflow-menu-arrow-size} - 1px) * -1);
+        }
+
+        &::before {
+            border-bottom-color: func.border-color(vars.$overflow-menu-content-border);
+            border-width: vars.$overflow-menu-arrow-size;
+            margin-left: calc(#{vars.$overflow-menu-arrow-size} * -1);
+        }
+
+        &[aria-expanded="true"] {
+
+            &::after,
+            &::before {
+                display: block;
+            }
+        }
+
+    }
+
+    // used when button only contains an icon
+    &.overflow-menu--hover-bg {
+
+        .button-overflow-menu {
+            padding: 0;
+
+            &:hover {
+                background-color: func.color(vars.$overflow-menu-button-icon-only-hover-background-color);
+            }
+        }
+    }
+
+    .overflow-menu-inner {
+        position: absolute;
+        width: calc(100% - 8px);
+        z-index: vars.$zindex-overflow;
+        border: func.border(vars.$overflow-menu-content-border);
+        box-shadow: func.shadow('light');
+        background: func.color(vars.$overflow-menu-content-background-color);
+        top: calc(100% + #{vars.$overflow-menu-dropdown-distance});
+        left: 4px;
+        border-radius: func.border-radius('medium');
+
+        @include mixins.media-breakpoint-up(md) {
+            width: auto;
+            max-width: 30rem;
+            left: auto;
+        }
+
+        @include mixins.media-breakpoint-up(sm) {
+            min-width: 28rem;
+        }
+
+        &.collapsed {
+            display: none;
+        }
+    }
+
+    .overflow-list {
+        font-size: func.font-size(vars.$overflow-menu-content-font-size);
+        line-height: func.units(vars.$overflow-menu-content-line-height, 'rem');
+        color: func.color(vars.$overflow-menu-content-text-color);
+        @include mixins.unstyled-list;
+
+        & > li {
+            border-bottom: func.border('very-low-contrast');
+
+            &:first-child button {
+                border-top-left-radius: func.border-radius('medium');
+                border-top-right-radius: func.border-radius('medium');
+            }
+
+            &:last-child {
+                border-bottom: 0;
+
+                button {
+                    border-bottom-left-radius: func.border-radius('medium');
+                    border-bottom-right-radius: func.border-radius('medium');
+                }
+            }
+        }
+
+        button {
+            line-height: func.units(5, 'rem');
+            cursor: pointer;
+            @include mixins.button-unstyled;
+        }
+
+        a {
+            @include mixins.body-copy-text;
+            display: block;
+            text-decoration: none;
+            line-height: func.units(5, 'rem');
+            max-width: 100%;
+
+            &:hover,
+            &:visited,
+            &:focus {
+                color: func.color(vars.$overflow-menu-content-text-color);
+            }
+        }
+
+        button,
+        a {
+            padding: 8px 16px;
+            width: 100%;
+            position: relative;
+
+            &:hover {
+                background-color: func.color(vars.$overflow-menu-content-link-hover-background-color);
+            }
+
+            &:focus {
+                z-index: vars.$zindex-focus;
+            }
+        }
+    }
+
+    &:not(.overflow-menu--md-no-responsive, .overflow-menu--lg-no-responsive) .sidemenu {
+        border-top: 0;
+        border-bottom: 0;
+    }
+
+    &.overflow-menu--md-no-responsive .sidemenu {
+        @include mixins.media-breakpoint-down(sm) {
+            border-top: 0;
+            border-bottom: 0;
+        }
+    }
+
+    &.overflow-menu--lg-no-responsive .sidemenu {
+        @include mixins.media-breakpoint-down(md) {
+            border-top: 0;
+            border-bottom: 0;
+        }
+    }
+
+    &--open-right {
+        .overflow-menu-inner {
+            li,
+            a,
+            button {
+                text-align: left;
+            }
+
+            @include mixins.media-breakpoint-up(md) {
+                left: calc(50% - 27px);
+
+                &::after {
+                    left: 13px;
+                }
+            }
+        }
+    }
+
+    &--open-left {
+        .overflow-menu-inner {
+            right: calc(50% - 27px);
+
+            &::after {
+                right: 13px;
+            }
+
+            li,
+            a,
+            button {
+                text-align: right;
+
+                .icon-svg {
+                    float: right;
+                    margin-right: func.units(2);
+                }
+            }
+        }
+    }
+
+    &.overflow-menu--md-no-responsive {
+
+        // overflow content always visible on large screens.
+        // does not look like a dropdown.
+        @include mixins.media-breakpoint-up(md) {
+            display: block;
+
+            &::before,
+            &::after {
+                display: none; // hide arrow
+            }
+
+            .button-overflow-menu {
+                display: none;
+            }
+
+            .overflow-menu-inner {
+                display: block !important;
+                width: 100%;
+                max-width: 100%;
+                position: static;
+                box-shadow: none;
+                border: none;
+                min-width: auto;
+            }
+        }
+    }
+
+    &.overflow-menu--lg-no-responsive {
+
+        // overflow content always visible on large screens.
+        // does not look like a dropdown.
+        @include mixins.media-breakpoint-up(lg) {
+            display: block;
+
+            &::before,
+            &::after {
+                display: none; // hide arrow
+            }
+
+            .button-overflow-menu {
+                display: none;
+            }
+
+            .overflow-menu-inner {
+                display: block !important;
+                width: 100%;
+                max-width: 100%;
+                position: static;
+                box-shadow: none;
+                border: none;
+                min-width: auto;
+            }
+        }
+    }
+
+    &--sort {
+        .button-overflow-menu {
+            text-decoration: underline;
+            line-height: func.units(5, 'rem');
+
+            .selected-value {
+                text-decoration: none;
+                display: inline-block;
+                margin-left: func.units(2);
+                font-weight: func.font-weight("semibold");
+            }
+
+            svg {
+                margin-right: func.units(2);
+            }
+        }
+
+        .overflow-menu-inner .overflow-list li button[aria-current="true"] {
+            font-weight: func.font-weight("semibold");
+            @include mixins.add-background-svg('check');
+            background-position: calc(100% - #{func.units(4)}) center;
+        }
+    }
+}

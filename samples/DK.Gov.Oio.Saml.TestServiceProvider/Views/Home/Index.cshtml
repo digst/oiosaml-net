@@ -1,0 +1,123 @@
+﻿@using DK.Gov.Oio.Saml.Constants
+@using DK.Gov.Oio.Saml.Schema.Protocol
+@model DK.Gov.Oio.Saml.TestServiceProvider.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>Authentication request (@(Model.IsOiosaml4 ? "OIOSAML 4" : "OIOSAML 3"))</h1>
+<p>Identity provider: @Model.IdentityProviderEntityId</p>
+
+
+<form asp-page="/Index" method="get">
+    
+    <fieldset>
+
+        <div class="form-group">
+            <label class="form-label" for="levelOfAssurance">Assurance Level (@(Model.IsOiosaml4 ? "generic LoA" : "NSIS LoA"))</label>
+            <select id="levelOfAssurance" name="levelOfAssurance" class="form-select"
+                    asp-items="@Model.AvailableAssuranceLevels">
+            </select>
+        </div>
+
+        @if (Model.IsOiosaml4)
+        {
+            <div class="form-group">
+                <legend class="form-label">OIOSAML 4 attribute profiles</legend>
+                @{ var i = 0; }
+                @foreach (var attributeProfile in Model.AvailableAttributeProfiles)
+                {
+                    i++;
+                    var id = $"profile{i}";
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="@id" name="attributeProfiles"
+                               class="form-checkbox" value="@attributeProfile"/>
+                        <label class="form-label" for="@id">@attributeProfile</label>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <legend class="form-label">OIOSAML 3 profile</legend>
+                @foreach (var profile in OioSaml3Profiles.All)
+                {
+                    <div class="form-group-radio">
+                        <input type="radio" id="profile@(profile)" name="profile" class="form-radio" value="@profile"/>
+                        <label class="form-label" for="profile@(profile)">@profile</label>
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="form-group">
+
+            <legend class="form-label">App switch platform</legend>
+
+            <div class="form-group-radio">
+                <input type="radio" id="appSwitchPlatformAndroid" name="appSwitchPlatform"
+                       class="form-radio" value="@AppSwitchPlatform.Android"/>
+                <label class="form-label" for="appSwitchPlatformAndroid">@AppSwitchPlatform.Android</label>
+            </div>
+
+            <div class="form-group-radio">
+                <input type="radio" id="appSwitchPlatformIos" name="appSwitchPlatform"
+                       class="form-radio" value="@AppSwitchPlatform.iOS"/>
+                <label class="form-label" for="appSwitchPlatformIos">@AppSwitchPlatform.iOS</label>
+            </div>
+            
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="RelayState">RelayState</label>
+            <input type="text" id="RelayState" name="RelayState" class="form-input">
+        </div>
+        
+        <div class="form-group">
+
+            <legend class="form-label">Forced re-authentication</legend>
+
+            <div class="form-group-radio">
+                <input type="radio" id="forceAuthTrue" name="forceAuthn"
+                       class="form-radio" value="@bool.TrueString"/>
+                <label class="form-label" for="forceAuthTrue">Yes</label>
+            </div>
+
+            <div class="form-group-radio">
+                <input type="radio" id="forceAuthFalse" name="forceAuthn"
+                       class="form-radio" value="@bool.FalseString"/>
+                <label class="form-label" for="forceAuthFalse">No</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            
+            <legend class="form-label">Passive authentication</legend>
+            
+            <div class="form-group-radio">
+                <input type="radio" id="isPassiveTrue" name="isPassive"
+                       class="form-radio" value="@bool.TrueString"/>
+                <label class="form-label" for="isPassiveTrue">Yes</label>
+            </div>
+
+            <div class="form-group-radio">
+                <input type="radio" id="isPassiveFalse" name="isPassive"
+                       class="form-radio" value="@bool.FalseString"/>
+                <label class="form-label" for="isPassiveFalse">No</label>
+            </div>
+            
+        </div>
+
+        <br/>
+
+        <div class="button-group">
+            <button class="button button-primary" asp-controller="Auth" asp-action="Login">
+                Log in
+            </button>
+        </div>
+
+    </fieldset>
+    
+</form>

@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Description>OIOSAML 4 (and OIOSAML 3) SAML 2.0 Service Provider for NemLog-in: builds and signs AuthnRequests, validates encrypted and signed assertions, handles single logout, and writes the audit log NemLog-in requires. Host-independent core; use DK.Gov.Oio.Saml.AspNetCore or DK.Gov.Oio.Saml.AspNet.</Description>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="BouncyCastle.Cryptography" />
+      <PackageReference Include="FluentValidation" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+      <PackageReference Include="Microsoft.Bcl.TimeProvider" />
+      <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+      <PackageReference Include="System.Configuration.ConfigurationManager" />
+      <PackageReference Include="System.Security.Cryptography.Xml" />
+      <PackageReference Include="System.Collections.Immutable" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Properties\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Templates\HTTPPostSubmitPage.html" />
+    </ItemGroup>
+
+</Project>

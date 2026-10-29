@@ -1,0 +1,10 @@
+// oiosaml theme
+@use 'themes/oiosaml' as oiosaml;
+@forward 'variables' with (
+    $header-portal-logo:                oiosaml.$header-portal-logo !default,
+);
+@forward "values";
+@forward "functions";
+@forward "mixins";
+
+@use 'dkfds-base';

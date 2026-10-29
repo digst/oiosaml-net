@@ -1,0 +1,113 @@
+@use "sass:map" as map;
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+
+// ----------------------------------------
+// Alert
+// ----------------------------------------
+$custom-alerts: () !default;
+$custom-alerts-bar: () !default;
+
+$alerts: (
+  success: vars.$alert-success-background-color,
+  warning: vars.$alert-warning-background-color,
+  error: vars.$alert-error-background-color,
+  info: vars.$alert-info-background-color
+);
+
+$alerts-bar: (
+  success: vars.$alert-success-border-color,
+  warning: vars.$alert-warning-border-color,
+  error: vars.$alert-error-border-color,
+  info: vars.$alert-info-border-color
+);
+
+$alerts: map.merge($alerts, $custom-alerts);
+$alerts-bar: map.merge($alerts-bar, $custom-alerts-bar);
+
+$-alert-padding-left: calc(func.units(vars.$alert-padding, 'rem') + func.units(5, 'rem') + func.units(305, 'rem')); // Padding + icon size + distance to text
+
+.alert {
+  background-color: func.color(vars.$alert-background-color);
+  background-image: linear-gradient(to right, func.color('gray-400') 4px, transparent 4px);
+  background-repeat: no-repeat;
+  padding: func.units(vars.$alert-padding, 'rem');
+  padding-left: $-alert-padding-left;
+  position: relative;
+  margin-top: func.units(4);
+  margin-bottom: func.units(4);
+  border-radius: func.border-radius('medium');
+
+  &:first-child {
+    margin-top:0;
+  }
+
+  &.alert--paragraph {
+    max-width: vars.$typography-text-max-width;
+  }
+  .alert-close{
+    background-color: func.color('transparent');
+    border: 0;
+    border-radius: 0;
+    font-weight: func.font-weight("normal");
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    min-height: auto;
+    cursor:pointer;
+    position: absolute;
+    top: func.units(4);
+    right: func.units(4);
+    color: func.color(vars.$alert-close-text-color);
+    text-decoration: underline;
+    @include mixins.small-text;
+    &:hover,
+    &:focus {
+        background-color: func.color('transparent');
+        color: inherit;
+    }
+    .icon-svg{
+      margin-right: func.units(2);
+      width: 1.6rem;
+      height: 1.6rem;
+      fill: currentColor;
+    }
+  }
+
+  .alert-icon {
+    position: absolute;
+    left: calc(func.units(vars.$alert-padding, 'rem') + func.units(2, 'rem')); // Padding + border width
+  }
+
+  .alert-heading {
+    @include mixins.responsive-style(vars.$alert-heading-fontsize, font-size);
+    @include mixins.responsive-style(vars.$alert-heading-lineheight, line-height);
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: func.font-weight("semibold");
+    color: func.color(vars.$alert-heading-color);
+    overflow-wrap: break-word;
+  }
+
+  .alert-text {
+    margin-bottom: 0;
+    margin-top: 0;
+    color: func.color(vars.$alert-text-color);
+    max-width: vars.$typography-text-max-width;
+    a, a:link, a:active, a:visited, a:hover{
+      color: func.color(vars.$alert-text-color);
+    }
+  }
+}
+
+@each $name, $bgcolor in $alerts {
+  .alert-#{$name} {
+    background-color: func.color($bgcolor);
+    background-image: linear-gradient(to right, func.color(map.get($alerts-bar, $name)) 4px, transparent 4px);
+  }
+}
+
+.alert + .alert{
+  margin-top: func.units(4);
+}

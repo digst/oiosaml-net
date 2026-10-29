@@ -1,0 +1,78 @@
+﻿@model DK.Gov.Oio.Saml.TestServiceProvider.Models.TopViewModel
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+    <link type="text/css" rel="stylesheet" href="~/lib/dkfds/css/dkfds-oiosaml.css" asp-append-version="true"/>
+</head>
+<body class="page-header-with-navigation">
+<header class="header">
+    <div class="portal-info">
+        <div class="portal-info-inner container">
+            <a href="/" title="Hjem" aria-label="Portalnavn" class="logo">
+                <span>Portalnavn</span>
+            </a>
+            
+            <div class="portal-user">
+                @Model.SubjectName
+            </div>
+                &nbsp;
+
+            @if (Model.IsAuthenticated)
+            {
+                <form asp-controller="Auth" asp-action="Logout" method="post">
+                    <button class="button button-primary" type="submit">
+                        Log out
+                    </button>
+                </form>
+            }
+            
+        </div>
+    </div>
+
+    <div class="solution-info">
+        <div class="solution-info-inner container">
+            <div class="solution-heading d-flex flex-wrap align-items-center">
+                <a href="/">TestServiceProvider</a>
+            </div>
+            <div class="additional-info">
+                <p><strong class="authority-name">OIO SAML.NET</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation-menu contains-search">
+        <div class="navigation-menu-inner container">
+
+            <nav class="nav" aria-label="Hovedmenu">
+                <ul class="mainmenu">
+                    <li>
+                        <a href="/" class="nav-link">
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Secure" class="nav-link">
+                            <span>Protected page</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        <br />
+        @RenderBody()
+    </main>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/dkfds/js/dkfds.js"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

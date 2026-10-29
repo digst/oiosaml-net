@@ -1,0 +1,479 @@
+@use "sass:map" as map;
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+
+$-padding-when-no-border: func.units(4);
+$-padding-when-border: calc(func.units(4) - 1px); // 1px for the border
+
+$-padding-when-no-border-compact: func.units(3);
+$-padding-when-border-compact: calc(func.units(3) - 1px); // 1px for the border
+
+$-padding-when-no-border-extracompact: 1px;
+$-padding-when-border-extracompact: 0;
+
+@mixin -responsive-table() {
+    display: block;
+
+    thead {
+        display: none;
+    }
+
+    tbody,
+    tr {
+        display: block;
+    }
+
+    tr {
+        border-bottom: func.border(vars.$table-row-border);
+
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
+
+    td,
+    th {
+        display: block;
+        border: 0;
+        padding: $-padding-when-no-border $-padding-when-border; // top and bottom | left and right
+
+        &:last-child {
+            padding-bottom: $-padding-when-border;
+        }
+
+        &[data-title]:not([data-title=""])::before {
+            content: attr(data-title);
+            text-align: left;
+            display: block;
+            font-weight: func.font-weight(vars.$table-head-font-weight);
+        }
+    }
+
+    &.table--compact {
+        th,
+        td {
+            padding-top: $-padding-when-no-border-compact;
+            padding-bottom: $-padding-when-no-border-compact;
+
+            &:last-child {
+                padding-bottom: $-padding-when-border-compact;
+            }
+        }
+    }
+
+    &.table--extracompact {
+
+        th,
+        td {
+            padding-top: $-padding-when-no-border-extracompact;
+            padding-bottom: $-padding-when-no-border-extracompact;
+
+            &:last-child {
+                padding-bottom: $-padding-when-border-extracompact;
+            }
+        }
+    }
+
+    &.table--borderless, &.structured-list {
+
+        td,
+        th {
+            padding-left: $-padding-when-no-border;
+            padding-right: $-padding-when-no-border;
+        }
+
+        tr {
+            &:first-child {
+
+                td,
+                th {
+                    &:first-child {
+                        border-top: func.border(vars.$table-row-border);
+                    }
+                }
+            }
+
+            &:last-child {
+
+                td,
+                th {
+                    border-bottom: 0;
+
+                    &:last-child {
+                        border-bottom: func.border(vars.$table-row-border);
+                    }
+                }
+            }
+        }
+    }
+
+    &.structured-list {
+        
+        tbody tr {
+            &:first-child td {
+                border-top: 0;
+            }
+
+            th {
+                padding-bottom: 0;
+            }
+
+            td:first-of-type {
+                padding-top: 0;
+            }
+        }
+    }
+}
+
+.table {
+    margin: 0;
+    line-height: func.units(vars.$table-text-line-height, 'rem');
+    border: func.border(vars.$table-border);
+    width: 100%;
+    color: func.color(vars.$table-text-color);
+    font-size: func.font-size(vars.$table-font-size);
+    border-collapse: inherit;
+    border-spacing: 0;
+
+    td,
+    th {
+        padding: $-padding-when-no-border $-padding-when-border $-padding-when-border $-padding-when-no-border; // top | right | bottom | left
+        border-right: func.border(vars.$table-cell-border);
+        border-bottom: func.border(vars.$table-row-border);
+        background-color: inherit;
+        vertical-align: top;
+        text-align: left;
+
+        &:last-child {
+            border-right: 0;
+        }
+
+        &.break-word {
+            word-break: break-all;
+        }
+
+        &.vertical-align-middle {
+            vertical-align: middle;
+        }
+
+        &.vertical-align-top {
+            vertical-align: top;
+        }
+
+        &.vertical-align-bottom {
+            vertical-align: bottom;
+        }
+    }
+
+    thead {
+        background-color: func.color(vars.$table-head-background-color);
+
+        th {
+            font-weight: func.font-weight(vars.$table-head-font-weight);
+            padding-top: calc(func.units(4) - 1px); // 1px for the border
+
+            &:first-child {
+                padding-left: calc(func.units(4) - 1px); // 1px for the border
+            }
+
+            &.table-header-no-wrap {
+                white-space: nowrap;
+            }
+
+            button,
+            .button {
+                width: auto;
+                font-weight: func.font-weight('semibold');
+                font-family: inherit;
+                font-size: inherit;
+                display: flex;
+            }
+        }
+    }
+
+    tbody {
+        th {
+            font-weight: func.font-weight(vars.$table-head-font-weight);
+        }
+
+        tr {
+            background-color: func.color('transparent');
+
+            td,
+            th {
+                &:first-child {
+                    padding-left: calc(func.units(4) - 1px); // 1px for the border
+                }
+            }
+
+            &:last-child {
+
+                td,
+                th {
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+
+    &.table--compact {
+
+        th,
+        td {
+            padding-top: $-padding-when-no-border-compact;
+            padding-bottom: $-padding-when-border-compact;
+        }
+
+        thead th {
+            padding-top: $-padding-when-border-compact;
+        }
+    }
+
+    &.table--extracompact {
+
+        th,
+        td {
+            padding-top: $-padding-when-no-border-extracompact;
+            padding-bottom: $-padding-when-border-extracompact;
+        }
+
+        thead th {
+            padding-top: $-padding-when-border-extracompact;
+        }
+    }
+
+    // No border
+    &.table--borderless, &.structured-list {
+        border: 0;
+
+        td,
+        th {
+            padding-right: $-padding-when-no-border;
+            border-right: 0;
+        }
+
+        thead,
+        tbody {
+
+            tr td,
+            tr th {
+                &:first-child {
+                    padding-left: func.units(4);
+                }
+
+                &:last-child {
+                    padding-right: func.units(4);
+                }
+            }
+        }
+
+        thead {
+            background-color: func.color('transparent');
+
+            th {
+                padding-top: func.units(4);
+            }
+        }
+
+        tbody tr:last-child {
+
+            td,
+            th {
+                border-bottom: func.border(vars.$table-row-border);
+            }
+        }
+
+        &.table--compact {
+
+            thead th {
+                padding-top: $-padding-when-no-border-compact;
+            }
+        }
+
+        &.table--extracompact {
+
+            thead th {
+                padding-top: $-padding-when-no-border-extracompact;
+            }
+        }
+    }
+
+    // Zebra lines
+    &.table--zebra {
+
+        td,
+        th {
+            border-right: 0;
+            padding-right: $-padding-when-no-border;
+
+            &:last-child {
+                padding-right: calc(func.units(4) - 1px); // 1px for the border
+            }
+        }
+
+        tr:nth-child(even) {
+            background-color: func.color(vars.$table-row-even-background-color);
+        }
+
+        tbody {
+            tr:nth-child(odd) {
+                background-color: func.color(vars.$table-row-odd-background-color);
+            }
+        }
+    }
+
+    // Zebra lines and no border
+    &.table--zebra.table--borderless {
+
+        thead {
+            background-color: func.color(vars.$table-row-even-background-color);
+        }
+    }
+
+    &.structured-list {
+        tbody tr:first-child {
+
+            td,
+            th {
+                border-top: func.border(vars.$table-row-border);
+            }
+        }
+
+        &.table--zebra {
+            tbody tr:first-child {
+
+                td,
+                th {
+                    border-top: 0;
+                }
+            }
+        }
+    }
+
+    @media screen {
+
+        // Make row into a "card" on phone
+        &.table--responsive-headers {
+            @include mixins.media-breakpoint-down(sm) {
+                @include -responsive-table;
+            }
+        }
+
+        @each $breakpoint in map.keys(vars.$grid-breakpoints) {
+            @if $breakpoint != xs and $breakpoint != xl {
+                @include mixins.media-breakpoint-down($breakpoint) {
+                    $infix: mixins.breakpoint-infix($breakpoint, vars.$grid-breakpoints);
+
+                    &.table#{$infix}-responsive-headers {
+                        @include -responsive-table;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.table--selectable {
+
+    tbody tr:hover,
+    &.table.table--zebra tr:nth-child(even):hover,
+    &.table.table--zebra tr:nth-child(odd):hover {
+        background-color: func.color(vars.$table-selectable-hover-background-color);
+    }
+
+    &.table.table--zebra tr.table-row-selected:nth-child(even),
+    &.table.table--zebra tr.table-row-selected:nth-child(odd),
+    .table-row-selected {
+        background-color: func.color(vars.$table-selectable-selected-background-color);
+    }
+}
+
+.rows-message {
+    margin-bottom: func.units(3, 'rem');
+}
+
+.table-pagination-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: func.border(vars.$table-border);
+    border-top: 0;
+
+    &.table--borderless {
+        border-left: 0;
+        border-right: 0;
+        border-bottom: func.border(vars.$table-row-border);
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    @include mixins.media-breakpoint-down(sm) {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .form-group {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        margin: func.units(3);
+
+        @include mixins.media-breakpoint-down(sm) {
+            width: auto;
+        }
+
+        .form-label {
+            font-weight: func.font-weight("normal");
+            margin-right: func.units(3);
+            margin-left: func.units(3);
+
+            @include mixins.media-breakpoint-down(sm) {
+                margin-left: 0;
+            }
+        }
+
+        .form-select {
+            width: auto;
+            margin: 0;
+            padding-right: func.units(7);
+        }
+    }
+
+    .table-pagination {
+        margin: func.units(3);
+    }
+}
+
+.table-actions {
+    border: func.border(vars.$table-border);
+    border-top: 0;
+    overflow: hidden;
+    padding: func.units(4) calc(func.units(4) - 1px) calc(func.units(4) - 1px); // top | left and right | bottom
+
+    &.table--borderless {
+        border-left: 0;
+        border-right: 0;
+        border-bottom: func.border(vars.$table-row-border);
+        padding: func.units(4) func.units(4) calc(func.units(4) - 1px); // top | left and right | bottom
+    }
+
+    .table-selected-number {
+        margin-top: 0;
+
+        &.no-selected {
+            color: func.color(vars.$table-selectable-help-text-color);
+        }
+    }
+
+}
+
+.table--responsive-scroll {
+    overflow-x: auto;
+    min-height: .01%;
+
+    &:focus {
+        @include mixins.focus;
+    }
+}

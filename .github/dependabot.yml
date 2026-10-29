@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # Versions live in Directory.Packages.props at the root, so one job there covers every project with one PR per update.
+  - package-ecosystem: nuget
+    directory: "/"
+    schedule:
+      interval: weekly
+    ignore:
+      # FluentValidation 12 targets net8.0 only; the core library is netstandard2.0 so that it runs on .NET Framework.
+      - dependency-name: "FluentValidation*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # One PR for all minor and patch updates; major updates and security updates get their own.
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly

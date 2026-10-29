@@ -1,0 +1,15 @@
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://keydescriptor-use.identity-provider.dk">
+  <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <KeyDescriptor>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"><X509Data><X509Certificate>dW5zcGVjaWZpZWQ=</X509Certificate></X509Data></KeyInfo>
+    </KeyDescriptor>
+    <KeyDescriptor use="signing">
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"><X509Data><X509Certificate>c2lnbmluZw==</X509Certificate></X509Data></KeyInfo>
+    </KeyDescriptor>
+    <KeyDescriptor use="encryption">
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"><X509Data><X509Certificate>ZW5jcnlwdGlvbg==</X509Certificate></X509Data></KeyInfo>
+    </KeyDescriptor>
+    <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://keydescriptor-use.identity-provider.dk/slo"/>
+    <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://keydescriptor-use.identity-provider.dk/sso"/>
+  </IDPSSODescriptor>
+</EntityDescriptor>

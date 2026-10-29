@@ -1,0 +1,5 @@
+@use "../functions" as func;
+
+.section + .section{
+    margin-top: func.units(5)
+}

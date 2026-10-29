@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewBag.Title</title>
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/lib/dkfds/css/dkfds-oiosaml.css")"/>
+</head>
+<body class="page-header-with-navigation">
+<header class="header">
+    <div class="portal-info">
+        <div class="portal-info-inner container">
+            <a href="/" title="Hjem" aria-label="Portalnavn" class="logo">
+                <span>Portalnavn</span>
+            </a>
+
+            <div class="portal-user">
+                @(Request.IsAuthenticated ? User.Identity.Name : "Not LoggedIn")
+            </div>
+                &nbsp;
+
+            @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("Logout", "Auth", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <button class="button button-primary" type="submit">
+                        Log out
+                    </button>
+                }
+            }
+
+        </div>
+    </div>
+
+    <div class="solution-info">
+        <div class="solution-info-inner container">
+            <div class="solution-heading d-flex flex-wrap align-items-center">
+                <a href="/">TestServiceProvider (.NET Framework)</a>
+            </div>
+            <div class="additional-info">
+                <p><strong class="authority-name">OIO SAML.NET</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation-menu contains-search">
+        <div class="navigation-menu-inner container">
+
+            <nav class="nav" aria-label="Hovedmenu">
+                <ul class="mainmenu">
+                    <li>
+                        <a href="/" class="nav-link">
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Secure", "Home")" class="nav-link">
+                            <span>Protected page</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        <br />
+        @RenderBody()
+    </main>
+</div>
+
+<script src="@Url.Content("~/lib/dkfds/js/dkfds.js")"></script>
+</body>
+</html>

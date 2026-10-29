@@ -1,0 +1,11 @@
+# The Schema DTOs are generated from the SAML/XML XSDs and are
+# treated as generated code. Marking them as such exempts them from nullable
+# (and other) analysis so enabling nullable on the hand-written code does not
+# flood warnings from these files.
+[*.cs]
+generated_code = true
+
+# These are generated DTOs; unused/unassigned fields are expected and are not
+# worth surfacing as warnings (generated_code does not cover these compiler warnings).
+dotnet_diagnostic.CS0169.severity = none
+dotnet_diagnostic.CS0649.severity = none

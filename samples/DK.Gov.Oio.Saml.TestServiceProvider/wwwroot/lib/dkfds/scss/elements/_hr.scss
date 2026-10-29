@@ -1,0 +1,6 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+
+hr {
+    border-top: func.border(vars.$hr-border);
+}

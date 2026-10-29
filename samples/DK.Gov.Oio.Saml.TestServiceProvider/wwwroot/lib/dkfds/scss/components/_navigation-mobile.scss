@@ -1,0 +1,200 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+
+body.mobile-nav-active {
+    overflow: hidden; // Hide scrollbars when the mobile drawer is open
+}
+
+%-mainmenu-mobile-item {
+    padding-top: func.units(4);
+    padding-bottom: func.units(4);
+    padding-right: func.units(5);
+    text-decoration: none;
+    color: func.color(vars.$navigation-link-default-color);
+    font-size: func.font-size('sm');
+    background-color: func.color('transparent');
+    display: block;
+    line-height: func.units(5, 'rem');
+    white-space: normal;
+    width: 100%;
+    max-width: unset;
+    cursor: pointer;
+    text-align: left;
+    border: 0;
+
+    &:hover, &:active {
+        background-color: func.color(vars.$navigation-link-background-color-hover);
+
+        .helptext {
+            color: func.color(vars.$navigation-link-current-helptext-color);
+            font-weight: func.font-weight("normal");
+        }
+    }
+
+    &:active {
+        background-color: func.color(vars.$navigation-link-background-color-active);
+    }
+
+    &:focus {
+        outline-offset: -3px;
+        position: relative;
+        z-index: vars.$zindex-nav-focus;
+    }
+
+    span {
+        display: inline-block;
+        width: 100%;
+        overflow-wrap: break-word;
+    }
+}
+
+// --------------------------
+// Main menu on mobile
+// --------------------------
+
+$-active-border-width: func.units(3);
+
+.navigation-menu-mobile ul.mainmenu {
+    display: flex;
+    flex-flow: column nowrap;
+    max-width: 100%;
+    border-bottom: 1px solid func.color(vars.$navigation-border-top-bottom-color);
+    border-top: 1px solid func.color(vars.$navigation-border-top-bottom-color);
+    @include mixins.unstyled-list;
+
+    li {
+        background-color: func.color(vars.$navigation-link-background-color);
+
+        .helptext {
+            color: func.color(vars.$navigation-link-helptext-color);
+            display: inline;
+            font-weight: func.font-weight("normal");
+        }
+
+        .submenu {
+            display: block;
+            position: relative;
+            width: 100%;
+    
+            .button-mobile-menu {
+
+                span {
+                    background-position-x: right;
+                    background-position-y: center;
+                    background-size: 2.4rem;
+                    padding-right: calc(2.4rem + 4px);
+                }
+    
+                &[aria-expanded="false"] > span {
+                    @include mixins.add-background-svg("plus");
+                }
+    
+                &[aria-expanded="true"] > span {
+                    @include mixins.add-background-svg("minus");
+                }
+            }
+
+            .overflow-menu-inner {
+                position: static;
+                border: 0;
+                width: 100%;
+
+                ul {
+                    width: 100%;
+                    max-width: none !important; // Override ul styling in typography.scss
+                    @include mixins.unstyled-list;
+                }
+
+                &.collapsed {
+                    display: none;
+                }
+            }
+        }
+
+        .nav-link, .button-mobile-menu {
+            @extend %-mainmenu-mobile-item;
+            padding-left: 24px;
+        }
+
+        li {
+            .nav-link, .button-mobile-menu {
+                padding-left: 48px;
+            }
+            
+            li {
+                .nav-link, .button-mobile-menu {
+                    padding-left: 72px;
+                }
+                
+                li {
+                    .nav-link, .button-mobile-menu {
+                        padding-left: 96px;
+                    }
+                }
+            }
+        }
+    }
+
+    & > li {
+        border-top: func.border('very-low-contrast');
+
+        &:first-child {
+            border-top: 0;
+        }
+
+        &.active {
+            border-left: $-active-border-width solid func.color(vars.$navigation-link-current-border-color);
+        }
+    }
+
+    li.active {
+        .nav-link, .button-mobile-menu {
+            margin-left: calc(0px - $-active-border-width);
+            width: calc(100% + $-active-border-width);
+
+            &:hover {
+                padding-left: 24px - $-active-border-width;
+                border-left: $-active-border-width solid func.color(vars.$navigation-link-current-border-color);
+            }
+        }
+
+        li {
+            .nav-link, .button-mobile-menu {
+                &:hover {
+                    padding-left: 48px - $-active-border-width;
+                }
+            }
+    
+            li {
+                .nav-link, .button-mobile-menu {
+                    &:hover {
+                        padding-left: 72px - $-active-border-width;
+                    }
+                }
+    
+                li {
+                    .nav-link, .button-mobile-menu {
+                        &:hover {
+                            padding-left: 96px - $-active-border-width;
+                        }
+                    }
+                }
+            }
+        }
+
+        & > a:first-child,
+        & > .submenu > button:first-child {
+            font-weight: func.font-weight("bold");
+        }
+    }
+
+    li.current {
+        background-color: func.color(vars.$navigation-link-current-background-color);
+
+        .helptext {
+            color: func.color(vars.$navigation-link-current-helptext-color);
+            font-weight: func.font-weight("normal");
+        }
+    }
+}

@@ -1,0 +1,207 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+
+%-long {
+    @include mixins.media-breakpoint-up(sm) {
+        flex-direction: row;
+
+        .card-image {
+            min-width: 33%;
+            max-width: 33%;
+            align-items: center;
+    
+            img {
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+.card-row {
+    max-width: none !important;
+    list-style-type: none;
+    padding: 0;
+
+    & > li {
+        margin-top: 0;
+
+        &::before {
+            content: "" !important;
+        }
+    }
+}
+
+.card-row:not(.row) li {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.card {
+    border: func.border('very-low-contrast');
+    border-radius: func.border-radius('medium');
+    overflow: hidden;
+    margin-bottom: func.units(6);
+    height: calc(100% - func.units(6));
+    display: flex;
+    flex-direction: column;
+
+    .card-image {
+        width: 100%;
+        display: flex;
+        background-color: func.color('gray-100');
+
+        img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border: 0;
+        }
+    }
+
+    // Check for "intrinsic" value and "aspect-ratio" to target old Safari browsers
+    @supports (height: intrinsic) and (not (aspect-ratio: 1)) {
+        .card-image img {
+            height: intrinsic;
+        }
+    }
+
+    .card-content {
+        padding: func.units(5);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        overflow-wrap: break-word;
+
+        .card-subheading {
+            @include mixins.subheading;
+            margin-bottom: func.units(2);
+            display: block;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            & + .card-actions {
+                margin-top: calc(func.units(5) - func.units(2)); // Subtract the subheading margin
+            }
+        }
+    
+        .card-heading {
+            font-size: func.font-size('3xl');
+            margin: 0;
+            margin-bottom: func.units(4);
+            font-weight: 600;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            & + .card-actions {
+                margin-top: calc(func.units(5) - func.units(4)); // Subtract the heading margin
+            }
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: func.units(4);
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+
+        .card-actions {
+            margin-top: func.units(5);
+
+            &.nobullet-list li {
+                margin-top: 0;
+            }
+        }
+
+        .button-group.card-actions {
+            margin-bottom: -16px;
+
+            .button {
+                margin-top: 0;
+                margin-bottom: func.units(4);
+            }
+        }
+
+        .nobullet-list.card-actions {
+            margin-bottom: 0;
+        }
+
+        * {
+            max-width: 100%;
+        }
+    }
+
+    &.long {
+        @extend %-long;
+    }
+
+    /* The default height calculation might make a card very tall, e.g. when placed outside a grid.
+       This class makes it possible to collapse the card's height. */
+    &.collapsed-height {
+        height: auto;
+    }
+}
+
+a.card {
+    text-decoration: none;
+    color: func.color('black');
+
+    .card-heading {
+        text-decoration: underline;
+        font-weight: 600;
+    }
+
+    .card-content {
+        padding-bottom: func.units(4);
+    }
+
+    .card-icon {
+        display: flex;
+        margin: auto func.units(5) func.units(5) auto; // top | right | bottom | left
+    }
+
+    &:link, &:visited, &:hover, &:active {
+        color: func.color('black');
+    }
+
+    &:hover, &:active {
+        border-color: func.color('gray-300');
+        .card-subheading {
+            color: func.color('gray-600');
+        }
+    }
+
+    &:hover {
+        background-color: func.color('gray-100');
+    }
+
+    &:active {
+        background-color: func.color('gray-200');
+    }
+
+    &.long {
+        @extend %-long;
+
+        .card-content {
+            padding-bottom: func.units(4);
+        }
+
+        @include mixins.media-breakpoint-up(sm) {
+            .card-content {
+                max-width: calc(100% - func.units(5) - func.units(5, 'rem') - func.units(5));
+                padding-bottom: func.units(5);
+            }
+    
+            .card-image + .card-content {
+                max-width: calc(67% - func.units(5) - func.units(5, 'rem') - func.units(5));
+            }
+        }
+    }
+}

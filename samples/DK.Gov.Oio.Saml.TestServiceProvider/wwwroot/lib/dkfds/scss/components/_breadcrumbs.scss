@@ -1,0 +1,52 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+
+.breadcrumbs {
+    color: func.color(vars.$breadcrumbs-text-color);
+    font-size: func.font-size(vars.$breadcrumbs-font-size);
+
+    .breadcrumbs__list {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    
+        &::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .icon-svg {
+            width: func.units(405, 'rem');
+            height: func.units(405, 'rem');
+            color: func.color('gray-400');
+        }
+
+        .breadcrumbs__list-item {
+            display: inline-block;
+            list-style-type: none;
+            margin-top: 0;
+            margin-bottom: func.units(1);
+        
+            &:first-child {
+                margin-left: 0;
+                padding-left: 0;
+            }
+        
+            .breadcrumbs__link {
+                color: func.color(vars.$breadcrumbs-text-color);
+            
+                &:visited,
+                &:hover,
+                &:active {
+                    color: func.color(vars.$breadcrumbs-text-color);
+                }
+            }
+        }
+    }
+}
+
+
+
+
+

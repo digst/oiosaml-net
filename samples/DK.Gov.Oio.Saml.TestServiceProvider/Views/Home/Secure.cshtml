@@ -1,0 +1,32 @@
+﻿@model DK.Gov.Oio.Saml.TestServiceProvider.Models.SecureViewModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>Authentication response</h1>
+
+<h2>RelayState</h2>
+
+<p>@Model.RelayState</p>
+
+<h2>Authentication claims</h2>
+
+<div class="table--responsive-scroll" tabindex="0">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Claim</th>
+            <th scope="col">Value</th>
+        </tr>
+        </thead>
+        <tbody style="font-family: monospace;">
+        @foreach (var claim in Model.Claims)
+        {
+            <tr>
+                <td style="text-wrap: nowrap">@claim.Type</td>
+                <td style="word-break: break-all">@claim.Value</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>        
+

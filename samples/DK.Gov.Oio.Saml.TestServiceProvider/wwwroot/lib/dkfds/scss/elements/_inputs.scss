@@ -1,0 +1,527 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+@use "../placeholder-selectors";
+
+.form-group{
+  margin-top: func.units(5); // 4
+  &:first-child{
+    margin-top: 0;
+  }
+}
+
+// Hint text
+.form-hint {
+  display: block;
+  color: func.color(vars.$form-hint-text-color);
+  font-size: func.font-size(vars.$form-hint-font-size);
+  line-height: func.units(vars.$form-hint-line-height, 'rem');
+  letter-spacing: vars.$form-hint-letter-spacing;
+  font-weight: func.font-weight(vars.$form-hint-font-weight);
+  overflow-wrap: break-word;
+}
+.form-label {
+  display: inline-block;
+  @include mixins.form-label-text;
+  &.disabled {
+    color: func.color(vars.$input-disabled-text-color);
+    font-weight: func.font-weight('medium');
+  }
+}
+
+// -----------------
+//   Text input
+// -----------------
+
+.form-input{
+  @extend %basic-form-element;
+  border: func.border(vars.$input-border);
+  color: func.color(vars.$input-text-color); // standardize on firefox
+  font-size: func.font-size(vars.$input-font-size);
+  line-height: func.units(vars.$input-line-height, 'rem');
+  padding: calc(8px - #{func.border-width(vars.$input-border)}) calc(16px - #{func.border-width(vars.$input-border)});
+
+  &::placeholder {
+    color: func.color(vars.$input-placeholder-color);
+    font-style: italic;
+    opacity: 1;
+    font-weight: func.font-weight("normal");
+  }
+}
+
+.form-input-wrapper{
+  display:flex;
+  .form-input{
+    -webkit-box-flex: 0;
+    flex: 0 1 auto;
+    &:focus{
+      position: relative;
+      z-index: vars.$zindex-focus;
+    }
+  }
+  .form-input-prefix + .form-input, &.form-input-wrapper--prefix .form-input{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  &.form-input-wrapper--suffix .form-input{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .form-input-prefix, .form-input-suffix {
+    font-weight: func.font-weight("normal");
+    font-size: func.font-size(vars.$input-font-size);
+    line-height: func.units(vars.$input-line-height, 'rem');
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 40px;
+    padding: calc(#{func.units(3)} - #{func.border-width(vars.$input-border)}) calc(#{func.units(3)} - #{func.border-width(vars.$input-border)});
+    margin-top: func.units(3);
+    border: func.border(vars.$input-border);
+    background-color: func.color(vars.$input-prefix-suffix-background-color);
+    text-align: center;
+    white-space: nowrap;
+    cursor: default;
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    
+  }
+  .form-input-suffix {
+    border-left: 0;
+    border-top-right-radius: func.border-radius('medium');
+    border-bottom-right-radius: func.border-radius('medium');
+  }
+  .form-input-prefix {
+    border-right: 0;
+    border-top-left-radius: func.border-radius('medium');
+    border-bottom-left-radius: func.border-radius('medium');
+  }
+  &.disabled {
+    .form-input-suffix, .form-input-prefix {
+      border-color: func.color(vars.$input-disabled-border-color);
+      color: func.color(vars.$input-disabled-text-color);
+    }
+  }
+  &.readonly {
+    .form-input-suffix, .form-input-prefix {
+      border-color: func.color('gray-200');
+    }
+  }
+}
+
+table {
+  .form-input, .form-select {
+    margin-top:0;
+  }
+}
+
+// -----------------
+//   Input states
+// -----------------
+
+
+$input-top-bottom-padding-feedback: calc(8px - #{vars.$input-border-width-feedback});
+$input-left-right-padding-feedback: calc(16px - #{vars.$input-border-width-feedback});
+
+.form-group.form-error {
+  border-left: vars.$form-group-error-border-width solid func.color(vars.$form-group-error-border-color);
+  padding-left: calc(#{func.units(4)} - 4px);
+
+  // Ensure that "error styling" only is applied to the group marked with an error
+  // Input fields should not inherit error styling from radios or checkboxes with hidden content 
+  & > .form-input,
+  & > .form-select,
+  & > fieldset > .date-group .form-input,
+  & > .date-picker .form-input,
+  & > .form-input-wrapper > .form-input {
+    border: vars.$input-border-width-feedback solid func.color(vars.$input-border-color-feedback-error);
+    padding: $input-top-bottom-padding-feedback $input-left-right-padding-feedback;
+  }
+
+  // Select needs more padding to make room for the chevron
+  & > .form-select {
+    padding-right: func.units(6);
+  }
+}
+.form-error-message {
+  @include mixins.form-label-text;
+  display: block;
+  color: func.color('error');
+  margin-top: func.units(2);
+}
+
+.form-group.form-success {
+  .form-input,
+  .form-select {
+    border: vars.$input-border-width-feedback solid func.color(vars.$input-border-color-feedback-success);
+    padding: $input-top-bottom-padding-feedback $input-left-right-padding-feedback;
+  }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea {
+  &:disabled {
+    background-color: func.color(vars.$input-disabled-background-color);
+    border-color: func.color(vars.$input-disabled-border-color);
+    color: func.color(vars.$input-disabled-text-color);
+    cursor: not-allowed;
+  }
+  &[readonly] {
+    background-color: func.color('gray-100');
+    color: func.color(vars.$input-text-color);
+    border: func.border('very-low-contrast');
+    cursor: default;
+  }
+}
+
+// -----------------
+//   Character limit
+// -----------------
+
+.form-limit {
+  .form-limit-error {
+    border: vars.$input-border-width-feedback solid func.color(vars.$input-border-color-feedback-error);
+    padding: $input-top-bottom-padding-feedback $input-left-right-padding-feedback;
+  }
+
+  .character-limit {
+    margin-top: func.units(2);
+  
+    &.limit-exceeded {
+      color: func.color(vars.$input-text-character-limit-exceeded-color);
+    }
+  }
+}
+
+
+// -----------------
+// Custom checkboxes & radio buttons
+// -----------------
+
+// Variables for readability
+$checkbox-radio-size: func.units(vars.$input-checkbox-radio-size);
+$label-distance: func.units(vars.$input-checkbox-radio-label-distance);
+$checkmark-size: func.units(vars.$input-checkbox-checkmark-size);
+$content-border-width: func.units(2);
+$expand-hit-area: func.units(2);
+$button-distance: func.units(3);
+$-checkbox-radio-margin-top: calc((func.units(vars.$input-checkbox-radio-size, 'rem') / 2) - ($checkbox-radio-size / 2) + $expand-hit-area); // Ensure correct placement of input on text zoom
+$-checkbox-radio-content-margin-top: func.units(2);
+
+// Radio/checkbox element including label, button, helptext and hidden content
+.form-group-checkbox,
+.form-group-radio {
+    margin-top: $button-distance;
+    position: relative; // Needed for the nested input buttons using absolute position
+
+    &:first-of-type {
+        margin-top: 0;
+    }
+}
+
+legend, .form-error-message, .form-hint {
+    & + .form-group-checkbox:first-of-type,
+    & + .form-group-radio:first-of-type,
+    & + .hidden-content-wrapper:first-of-type {
+        margin-top: $button-distance;
+    }
+}
+
+// Hide the original radio and checkbox button
+.form-checkbox,
+.form-radio {
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    z-index: vars.$zindex-radio-checkbox;
+    margin: 0;
+    opacity: 0;
+    height: $checkbox-radio-size;
+    width: $checkbox-radio-size;
+    margin-top: $-checkbox-radio-margin-top;
+}
+
+// Radio and checkbox label/text
+.form-checkbox + label,
+.form-radio + label {
+    cursor: pointer;
+    font-weight: func.font-weight(vars.$input-checkbox-radio-label-font-weight);
+    line-height: func.units(vars.$input-checkbox-radio-size, 'rem');
+    display: inline-block;
+    outline: none;
+    color: func.color(vars.$input-checkbox-radio-label-color);
+    padding-left: calc($checkbox-radio-size + $label-distance);
+    padding-top: $expand-hit-area;
+    padding-bottom: $expand-hit-area;
+}
+
+.form-checkbox + label + .tooltip-wrapper {
+  margin-top: $expand-hit-area;
+  margin-bottom: $expand-hit-area;
+  margin-left: func.units(1);
+}
+
+// Unchecked radio and checkbox button
+.form-checkbox + label::before,
+.form-radio + label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    display: inherit;
+    background-color: func.color(vars.$input-checkbox-radio-unchecked-background-color);
+    border: 2px solid func.color(vars.$input-checkbox-radio-unchecked-border-color);
+    margin-right: $label-distance;
+    height: $checkbox-radio-size;
+    width: $checkbox-radio-size;
+    margin-top: calc((func.units(vars.$input-checkbox-radio-size, 'rem') / 2) - ($checkbox-radio-size / 2) + $expand-hit-area); // Ensure correct placement of input on text zoom
+}
+
+// Unchecked checkbox button border radius
+.form-checkbox + label::before {
+    border-radius: func.border-radius('small');
+}
+
+// Unchecked radio button border radius
+.form-radio + label::before {
+    border-radius: 100%;
+}
+
+// Checked checkbox
+.form-checkbox:checked + label::before,
+.form-checkbox[aria-checked="mixed"] + label::before,
+.form-checkbox.mixed + label::before {
+    background-color: func.color(vars.$input-checkbox-checked-background-color);
+    border: 2px solid func.color(vars.$input-checkbox-checked-border-color);
+    background-size: $checkmark-size;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+// 'Normal' checkbox checkmark
+.form-checkbox:checked + label::before {
+    background-image: url(vars.$icons-folder-path + vars.$input-checkbox-checked-image + '.svg');
+}
+
+// 'Mixed' checkbox checkmark
+.form-checkbox[aria-checked="mixed"] + label::before,
+.form-checkbox.mixed + label::before {
+    background-image: url(vars.$icons-folder-path + vars.$input-checkbox-mixed-image + '.svg');
+}
+
+// Checked radio
+.form-radio:checked + label {
+
+    // Radio button background
+    &::before {
+        background-color: func.color(vars.$input-radio-checked-background-color);
+        border: 2px solid func.color(vars.$input-radio-checked-border-color);
+    }
+
+    // Radio button 'dot'
+    &::after {
+        content: "";
+        position: absolute;
+        display: inherit;
+        height: func.units(vars.$input-radio-dot-size);
+        width: func.units(vars.$input-radio-dot-size);
+        left: calc(($checkbox-radio-size - func.units(vars.$input-radio-dot-size)) / 2);
+        top: calc(($checkbox-radio-size - func.units(vars.$input-radio-dot-size)) / 2);
+        background-color: func.color(vars.$input-radio-dot-color);
+        border-radius: 100%;
+        margin-top: calc((func.units(vars.$input-checkbox-radio-size, 'rem') / 2) - ($checkbox-radio-size / 2) + $expand-hit-area); // Ensure correct placement of input on text zoom
+    }
+}
+
+// Focus
+.form-checkbox:focus + label::before,
+.form-checkbox.focus + label::before,
+.form-radio:focus + label::before,
+.form-radio.focus + label::before {
+    @include mixins.focus;
+}
+
+// Helptext
+.form-checkbox + label + .form-hint,
+.form-radio + label + .form-hint {
+    padding-left: calc($checkbox-radio-size + $label-distance);
+    margin-top: -$expand-hit-area;
+}
+
+// Hidden content
+.checkbox-content,
+.radio-content {
+    margin-left: calc(($checkbox-radio-size + $content-border-width) / 2);
+    padding-left: calc(($checkbox-radio-size + (2 * $label-distance) - $content-border-width) / 2);
+    padding-top: func.units(4);
+    margin-top: $-checkbox-radio-content-margin-top;
+    margin-bottom: func.units(305);
+    padding-bottom: func.units(505);
+    
+    &[aria-hidden="true"] {
+        display: none;
+    }
+}
+
+$-content-wrapper-top-offset: calc($-checkbox-radio-margin-top + $checkbox-radio-size + $expand-hit-area + $-checkbox-radio-content-margin-top);
+.hidden-content-wrapper {
+  margin-top: $button-distance;
+  position: relative;
+  
+  &.show-content {
+    &::before {
+      content: '';
+      position: absolute;
+      display: block;
+      border-left: $content-border-width solid func.color(vars.$input-checkbox-radio-content-border-color);
+      height: calc(100% - $-content-wrapper-top-offset);
+      left: calc(($checkbox-radio-size - $content-border-width) / 2);
+      top: $-content-wrapper-top-offset;
+    }
+  }
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+}
+
+// Special styling when radio/checkboxes are used to select table rows
+.table--selectable th:first-child, 
+.table--selectable td:first-child {
+    .form-group-checkbox,
+    .form-group-radio {
+        margin-top: 0;
+        width: $checkbox-radio-size;
+        height: $checkbox-radio-size;
+
+        .form-checkbox,
+        .form-radio {
+            margin-top: 0;
+
+            & + label {
+                padding-left: 0;
+        
+                &::before {
+                    margin-right: 0;
+                    margin-top: calc((func.units(vars.$input-checkbox-radio-size, 'rem') / 2) - ($checkbox-radio-size / 2)); // Ensure correct placement of input on text zoom
+                }
+
+                &::after {
+                    margin-top: calc((func.units(vars.$input-checkbox-radio-size, 'rem') / 2) - ($checkbox-radio-size / 2)); // Ensure correct placement of input on text zoom
+                }
+            }
+        }
+    }
+}
+
+// Disabled
+.form-checkbox:disabled,
+.form-radio:disabled {
+    cursor: not-allowed;
+}
+
+// Disabled label and button
+.form-checkbox:disabled + label,
+.form-radio:disabled + label {
+    cursor: not-allowed;
+    color: func.color(vars.$input-checkbox-radio-disabled-label-color);
+
+    &::before {
+        background-color: func.color(vars.$input-checkbox-radio-disabled-unchecked-background-color);
+        border: 2px solid func.color(vars.$input-checkbox-radio-disabled-unchecked-border-color);
+    }
+}
+
+// Disabled checked checkbox
+.form-checkbox:disabled:checked + label,
+.form-checkbox:disabled[aria-checked="mixed"] + label,
+.form-checkbox.mixed:disabled + label {
+
+    &::before {
+        background-color: func.color(vars.$input-checkbox-disabled-checked-background-color);
+        border: 2px solid func.color(vars.$input-checkbox-disabled-checked-border-color);
+    }
+
+    &::after {
+        background-color: func.color(vars.$input-checkbox-disabled-checkmark-color);
+    }
+}
+
+// Disabled checked radio
+.form-radio:disabled:checked + label {
+
+    &::before {
+        background-color: func.color(vars.$input-radio-disabled-checked-background-color);
+        border: 2px solid func.color(vars.$input-radio-disabled-checked-border-color);
+    }
+
+    &::after {
+        background-color: func.color(vars.$input-radio-disabled-dot-color);
+    }
+}
+
+
+
+
+// -----------------
+// Range inputs
+// -----------------
+[type="range"] {
+  @include mixins.appearance-none;
+  border: none;
+  padding-left: 0;
+  width: 100%;
+}
+
+[type="range"]::-webkit-slider-runnable-track {
+  background: func.color(vars.$input-range-track-default-background-color);
+  border: func.border(vars.$input-range-track-default-border);
+  cursor: pointer;
+  height: 1.2rem;
+  width: 100%;
+}
+
+[type="range"]::-moz-range-track {
+  background: func.color(vars.$input-range-track-default-background-color);
+  border: func.border(vars.$input-range-track-default-border);
+  cursor: pointer;
+  height: 1.2rem;
+  width: 100%;
+}
+
+[type="range"]::-webkit-slider-thumb {
+  @include mixins.appearance-none;
+  border: func.border(vars.$input-range-thumb-default-border);
+  height: 2.2rem;
+  border-radius: 100%;
+  background: func.color(vars.$input-range-thumb-default-background-color);
+  cursor: pointer;
+  margin-top: -.65rem;
+  width: 2.2rem;
+}
+
+[type="range"]::-moz-range-thumb {
+  background: func.color(vars.$input-range-thumb-default-background-color);
+  border: func.border(vars.$input-range-thumb-default-border);
+  border-radius: 100%;
+  cursor: pointer;
+  height: 2.2rem;
+  width: 2.2rem;
+}
+
+.form-label + input[type="file"]{
+  margin-top: func.units(3);
+}
+
+input[type="file"]{
+  display: block;
+}
+

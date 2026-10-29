@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
+        <IsPackable>false</IsPackable>
+        <!-- .NET Framework tests need Windows; elsewhere the project only builds, and CI runs it in its Windows job. -->
+        <IsTestProject>false</IsTestProject>
+        <IsTestProject Condition="'$(OS)' == 'Windows_NT'">true</IsTestProject>
+        <IsTestingPlatformApplication Condition="'$(OS)' != 'Windows_NT'">false</IsTestingPlatformApplication>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="System.Web" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="coverlet.MTP" />
+        <PackageReference Include="Moq" />
+        <PackageReference Include="xunit.runner.visualstudio">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="xunit.v3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../testconfig.json" Link="testconfig.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="../DK.Gov.Oio.Saml.Tests/Builders/TestCertificates.cs" LinkBase="Builders" />
+        <Content Include="../DK.Gov.Oio.Saml.Tests/idp-metadata/test-idp.xml" Link="idp-metadata/test-idp.xml" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../src/DK.Gov.Oio.Saml.AspNet/DK.Gov.Oio.Saml.AspNet.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,22 @@
+<Project>
+    <PropertyGroup>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <!-- On by default only for .NET 5+; the netstandard2.0 and net472 projects need it for CA1822. -->
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <!-- Only the libraries under src/ are packages; src/Directory.Build.props turns packing on there. -->
+        <IsPackable>false</IsPackable>
+        <Authors>Digitaliseringsstyrelsen</Authors>
+        <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    </PropertyGroup>
+    <!-- dotnet build -p:CheckUnusedUsings=true fails on an unused using directive. The compiler only reports IDE0005 while
+         generating XML documentation, which the code doesn't have, hence the missing-comment warning is silenced. -->
+    <PropertyGroup Condition="'$(CheckUnusedUsings)' == 'true'">
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
+        <WarningsAsErrors>$(WarningsAsErrors);IDE0005</WarningsAsErrors>
+    </PropertyGroup>
+    <!-- CI fails on a package with a known high or critical vulnerability; locally NuGet only warns. -->
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <WarningsAsErrors>$(WarningsAsErrors);NU1903;NU1904</WarningsAsErrors>
+    </PropertyGroup>
+</Project>

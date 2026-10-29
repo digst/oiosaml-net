@@ -1,0 +1,108 @@
+name: CI
+
+# Build and test on every pull request and on pushes to feature branches.
+on:
+  pull_request:
+  push:
+    branches:
+      - 'feature/**'
+      - 'main'
+
+# Cancel superseded runs for the same branch/PR to save CI minutes.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# checks: write is required for the test reporter to publish its check run.
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore DK.Gov.Oio.Saml.slnx
+
+      # CheckUnusedUsings also fails the build on an unused using directive.
+      - name: Build
+        run: dotnet build DK.Gov.Oio.Saml.slnx --configuration Release --no-restore -p:CheckUnusedUsings=true
+
+      # Microsoft Testing Platform (global.json); coverlet's filters are in test/testconfig.json.
+      - name: Test
+        run: >-
+          dotnet test --solution DK.Gov.Oio.Saml.slnx --configuration Release --no-build
+          --report-xunit-trx --coverlet
+          --results-directory "${{ github.workspace }}/TestResults"
+
+      # Publishes a per-test report as a check run, even when tests fail.
+      - name: Publish test report
+        uses: dorny/test-reporter@v3
+        if: always()
+        with:
+          name: Test results
+          path: TestResults/*.trx
+          reporter: dotnet-trx
+
+      - name: Coverage report
+        uses: danielpalme/ReportGenerator-GitHub-Action@v5
+        if: always()
+        with:
+          reports: TestResults/**/coverage.cobertura.*.xml
+          targetdir: CoverageReport
+          reporttypes: HtmlInline;MarkdownSummaryGithub
+
+      - name: Coverage summary
+        if: always()
+        run: cat CoverageReport/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: coverage-report
+          path: CoverageReport
+
+  # The .NET Framework tests need Windows; the Ubuntu job builds that project but doesn't run it.
+  aspnet-tests:
+    name: .NET Framework tests
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Test
+        run: >-
+          dotnet test --project test/DK.Gov.Oio.Saml.AspNet.Tests --configuration Release
+          --report-xunit-trx
+          --results-directory "${{ github.workspace }}/TestResults"
+
+      - name: Publish test report
+        uses: dorny/test-reporter@v3
+        if: always()
+        with:
+          name: .NET Framework test results
+          path: TestResults/*.trx
+          reporter: dotnet-trx
+
+      # The release workflow packs here too, as the .NET Framework package builds only on Windows; this catches packaging errors early.
+      - name: Pack
+        run: >-
+          dotnet pack DK.Gov.Oio.Saml.slnx --configuration Release
+          -p:Version=0.0.0-ci.${{ github.run_number }}
+          --output "${{ github.workspace }}/packages"

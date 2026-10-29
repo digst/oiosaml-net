@@ -1,0 +1,10 @@
+{
+  "platformOptions": {
+    "Coverlet": {
+      "include": "[DK.Gov.Oio.Saml]*,[DK.Gov.Oio.Saml.AspNetCore]*,[DK.Gov.Oio.Saml.AspNet]*",
+      "excludeByFile": "**/src/DK.Gov.Oio.Saml/Schema/**/*.cs",
+      "excludeByAttribute": "GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute",
+      "format": "cobertura"
+    }
+  }
+}

@@ -1,0 +1,86 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+
+ // Ul lists
+
+ ul {
+   padding-left: 0;
+   list-style-type: none;
+   color: func.color(vars.$typography-body-text-color);
+   font-size: func.font-size(vars.$typography-body-text-font-size);
+   line-height: func.units(vars.$typography-body-text-line-height, 'rem');
+   > li {
+     margin-top:func.units(3);
+     list-style-type: none;
+     position: relative;
+     padding-left: func.units(4, 'rem');
+     line-height: func.units(vars.$typography-body-text-line-height, 'rem');
+     &::before {
+       content: "\2022";
+       position: absolute;
+       left: 0;
+       top: -1px;
+       font-size: func.font-size('lg');
+     }
+   }
+ }
+// Ol lists
+ol {
+  padding-left: func.units(505);
+  li{
+    margin-top: func.units(3);
+    line-height: func.units(5, 'rem');
+  }
+}
+
+.article{
+  ul > li, ol > li{
+    font-size: func.font-size(vars.$typography-article-font-size);
+    line-height: func.units(vars.$typography-article-line-height, 'rem');
+    letter-spacing: vars.$typography-article-letter-spacing;
+  }
+}
+
+// Unstyled lists
+.unstyled-list {
+  @include mixins.unstyled-list;
+}
+
+.bordered-list{
+  border-top: func.border('low-contrast');
+  @include mixins.unstyled-list;
+  li{
+    padding: func.units(3) 0;
+    border-bottom: func.border('low-contrast');
+  }
+}
+
+ // No bullet lists
+ .nobullet-list {
+   @include mixins.nobullet-list;
+ }
+
+ // No indententation list
+ .noindent-list {
+   @include mixins.noindent-list;
+ }
+
+
+.inline-list {
+  @include mixins.unstyled-list;
+  > li {
+    display: block;
+
+    @include mixins.media-breakpoint-up(md) {
+      display: inline-block;
+    }
+  }
+
+  li + li{
+    margin-top: func.units(305);
+    @include mixins.media-breakpoint-up(md) {
+      margin-top: 0;
+    }
+  }
+}

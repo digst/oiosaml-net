@@ -1,0 +1,144 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+
+$-arrow-height: func.units(3);            // Must match arrowHeight in src\js\components\tooltip.js
+$-arrow-dist-to-target: func.units(2);    // Must match arrowDistanceToTarget in src\js\components\tooltip.js
+
+.tooltip-wrapper {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    line-height: 1;
+    display: inline-flex; // Display MUST be flex or inline-flex, otherwise screenreaders will read a help button as part of the label for text input
+    vertical-align: bottom;
+
+    &.in-text button.tooltip-target {
+        &:focus {
+            outline-offset: -2px;
+        }
+
+        .icon-svg {
+            padding-top: 0.3rem;
+            padding-bottom: 0.3rem;
+        }
+    }
+
+    // "Bridge" between tooltip and tooltip target. Allows cursor to move onto tooltip.
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: calc($-arrow-height + $-arrow-dist-to-target);
+        display: block;
+    }
+    &.place-above::before {
+        top: calc(0px - $-arrow-height - $-arrow-dist-to-target);
+    }
+    &.place-below::before {
+        bottom: calc(0px - $-arrow-height - $-arrow-dist-to-target);
+    }
+
+    .tooltip {
+        line-height: 1.5;
+        font-size: func.font-size('xs');
+        font-weight: func.font-weight('normal');
+        color: func.color(vars.$tooltip-color);
+        box-shadow: func.shadow('light');
+        background-color: func.color(vars.$tooltip-background-color);
+        border-radius: func.border-radius('small');
+        padding: func.units(2) func.units(305);
+        z-index: vars.$zindex-tooltip;
+        display: block;
+        overflow-wrap: break-word;
+        position: absolute;
+        bottom: auto;
+    }
+
+    &[data-force-visible="true"] {
+        .tooltip {
+            position: fixed;
+    
+            &::before {
+                content: '';
+                border-right: calc($-arrow-height + 1px) solid transparent;
+                border-left: calc($-arrow-height + 1px) solid transparent;
+                display: block;
+                position: absolute;
+                left: calc(50% - $-arrow-height - 1px);
+                top: calc(0px - $-arrow-height - $-arrow-dist-to-target);
+                z-index: vars.$zindex-tooltip + 1;
+            }
+
+            &.open-left::before {
+                right: func.units(305);
+                left: auto;
+            }
+
+            &.open-right::before {
+                left: func.units(305);
+                right: auto;
+            }
+        }
+
+        .tooltip-arrow {
+            display: none;
+        }
+
+        &.place-above {
+            .tooltip::before {
+                bottom: calc(0px - $-arrow-height + 1px);
+                top: auto;
+                border-top: $-arrow-height solid func.color(vars.$tooltip-background-color);
+            }
+        }
+    
+        &.place-below {
+            .tooltip::before {
+                top: calc(0px - $-arrow-height + 1px);
+                bottom: auto;
+                border-bottom: $-arrow-height solid func.color(vars.$tooltip-background-color);
+            }
+        }
+    }
+
+    .tooltip-arrow {
+        pointer-events: none;
+
+        &::before {
+            content: '';
+            border-right: calc($-arrow-height + 1px) solid transparent;
+            border-left: calc($-arrow-height + 1px) solid transparent;
+            display: block;
+            position: absolute;
+            left: calc(50% - $-arrow-height - 1px);
+            top: calc(0px - $-arrow-height - $-arrow-dist-to-target);
+            z-index: vars.$zindex-tooltip + 1;
+        }
+    }
+
+    &.place-above .tooltip-arrow::before {
+        border-top: $-arrow-height solid func.color(vars.$tooltip-arrow-color);
+        top: calc(0px - $-arrow-height - $-arrow-dist-to-target);
+    }
+
+    &.place-below .tooltip-arrow::before {
+        border-bottom: $-arrow-height solid func.color(vars.$tooltip-arrow-color);
+        bottom: calc(0px - $-arrow-height - $-arrow-dist-to-target);
+    }
+
+    &.hide-tooltip {
+        .tooltip, .tooltip-arrow {
+            display: none;
+        }
+
+        &::before {
+            display: none;
+        }
+    }
+
+    button.tooltip-target.js-pressed, button.tooltip-target.js-pressing {
+        user-select: none;
+        -webkit-touch-callout: none;
+    }
+}
+

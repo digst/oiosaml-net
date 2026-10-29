@@ -1,0 +1,4 @@
+# Copied from ../DK.Gov.Oio.Saml.TestServiceProvider at build
+certificates/
+idp-metadata/
+lib/

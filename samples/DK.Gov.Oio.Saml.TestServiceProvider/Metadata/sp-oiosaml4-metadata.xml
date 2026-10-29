@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EntityDescriptor entityID="https://saml.oiosaml-net.dk/oiosaml4" xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+                  xmlns:kfobs="dk:gov:nemlogin:kfobsinternalschema" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">
+    <SPSSODescriptor
+            protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol https://data.gov.dk/saml/profile/oio/4"
+            AuthnRequestsSigned="true" WantAssertionsSigned="true">
+        <md:Extensions xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+            <oiosaml:SupportedAttributeProfiles xmlns:oiosaml="https://data.gov.dk/eid/saml/extensions">
+                <oiosaml:Profile>https://data.gov.dk/eid/Person/DK</oiosaml:Profile>
+                <oiosaml:Profile>https://data.gov.dk/eid/Person/DK/Anonymous</oiosaml:Profile>
+                <oiosaml:Profile>https://data.gov.dk/eid/Professional/DK</oiosaml:Profile>
+                <oiosaml:Profile>https://data.gov.dk/eid/Professional/DK/Anonymous</oiosaml:Profile>
+                <oiosaml:Profile>https://data.gov.dk/eid/Person/EU</oiosaml:Profile>
+                <oiosaml:Profile>https://data.gov.dk/eid/Person/EU/Anonymous</oiosaml:Profile>
+                <oiosaml:Profile>https://data.gov.dk/eid/Professional/EU</oiosaml:Profile>
+            </oiosaml:SupportedAttributeProfiles>
+        </md:Extensions>
+        <KeyDescriptor use="signing">
+            <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <X509Data>
+                    <X509Certificate>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</X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </KeyDescriptor>
+        <KeyDescriptor use="encryption">
+            <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <X509Data>
+                    <X509Certificate>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</X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </KeyDescriptor>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                             Location="https://localhost:20002/auth/logout"
+                             ResponseLocation="https://localhost:20002/auth/logout"/>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</NameIDFormat>
+        <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                                  Location="https://localhost:20002/auth/AssertionConsumerService" index="0"
+                                  isDefault="true"/>
+        <AttributeConsumingService index="0" isDefault="true">
+            <ServiceName xml:lang="da">SP</ServiceName>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/bootstrapToken"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/privilegesIntermediate"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/concept/core/nsis/ial"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/concept/core/nsis/aal"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/fullName"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/firstName"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/lastName"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/email"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/cprNumber"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/age"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/cprUuid"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/dateOfBirth"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/person/pid"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/professional/uuid/persistent"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/professional/rid"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/professional/productionUnit"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/professional/seNumber"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/professional/authorizedToRepresent"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/concept/core/eid/provider"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/concept/core/loa"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eidas/loa"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/eidas/memberState"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/nsis/cpr_ial"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/professional/isRobot"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="https://data.gov.dk/model/core/eid/allowQualifiedSigning"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>              <!-- EiDAS -->
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/BirthName"
+ NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/DateOfBirth"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/PlaceOfBirth"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/CurrentAddress"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/Gender"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/Nationality"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/CountryOfBirth"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/TownOfBirth"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/CountryOfResidence"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/PhoneNumber"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/EmailAddress"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/BirthName"
+ NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/PlaceOfBirth"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/CurrentAddress"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/Gender"
+ NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/Nationality"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/CountryOfBirth"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/TownOfBirth"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/CountryOfResidence"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/PhoneNumber"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/naturalperson/representative/EmailAddress"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://data.europa.eu/p4s/attributes/PowerOfRepresentationScope"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/LegalPersonIdentifier"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/LegalName"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/LegalPersonAddress"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/VATRegistrationNumber"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/TaxReference"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/D-2012-17-EUIdentifier"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/LEI"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/EORI"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/SEED"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/SIC"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/LegalPhoneNumber"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+            <RequestedAttribute Name="http://eidas.europa.eu/attributes/legalperson/LegalEmailAddress"
+                                NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>  
+        </AttributeConsumingService>
+    </SPSSODescriptor>
+</EntityDescriptor>

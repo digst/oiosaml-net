@@ -1,0 +1,284 @@
+@use "../variables" as vars;
+@use "../functions" as func;
+@use "../mixins" as mixins;
+
+html {
+  font-family: vars.$typography-font-family;
+  font-size: vars.$root-font-size;
+}
+
+body {
+  font-size: func.font-size(vars.$typography-base-font-size);
+  background-color: func.color('white');
+  color: func.color('black');
+  text-rendering: optimizeLegibility;
+  @include mixins.font-smoothing;
+  font-kerning: normal;
+}
+
+p {
+  line-height: func.units(vars.$typography-base-line-height, 'rem');
+  margin-bottom: func.units(3, 'rem');
+  margin-top: func.units(4, 'rem');
+}
+
+a {
+  color: func.color("link");
+
+  &:focus,
+  &.link-focus {
+    @include mixins.focus;
+  }
+
+  &:visited,
+  &.link-visited {
+    color: func.color("link-visited");
+  }
+
+  &:hover,
+  &.link-hover {
+    color: func.color("link-hover");
+  }
+
+  &.bold-link {
+    font-weight: func.font-weight("semibold");
+  }
+
+  &:not(.button, .full-width-image, .card) {
+    max-width: vars.$typography-text-max-width;
+  }
+}
+
+h1, .h1 {
+  @include mixins.h1;
+}
+h2, .h2{
+  @include mixins.h2;
+}
+
+h3, .h3 {
+  @include mixins.h3;
+}
+
+h4, .h4{
+  @include mixins.h4;
+}
+
+h5, .h5{
+  @include mixins.h5;
+}
+
+h6, .h6{
+  @include mixins.h6;
+}
+
+p, .body-text, .body-copy-text{
+  @include mixins.body-copy-text;
+}
+figcaption, .figcaption{
+  @include mixins.caption;
+  p{
+    @include mixins.caption;
+  }
+}
+.subheading{
+  @include mixins.subheading;
+}
+
+.font-lead {
+  font-size: func.font-size(vars.$typography-lead-font-size);
+  font-weight: func.font-weight("normal");
+  line-height: func.units(vars.$typography-lead-line-height, 'rem');
+  max-width: vars.$typography-text-max-width;
+  color: func.color('ink');
+  letter-spacing: vars.$typography-lead-letter-spacing;
+}
+.article{
+  font-size: func.font-size(vars.$typography-article-font-size);
+  font-weight: func.font-weight("normal");
+  line-height: func.units(vars.$typography-article-line-height, 'rem');
+  max-width: vars.$typography-text-max-width;
+  color: func.color('ink');
+  letter-spacing: vars.$typography-article-letter-spacing;
+}
+small, .small-text {
+  @include mixins.small-text;
+}
+
+.weight-normal {
+  font-weight: func.font-weight("normal");
+}
+
+.weight-semibold {
+  font-weight: func.font-weight("semibold");
+}
+.facit {
+  border-bottom: func.border('high-contrast');
+  border-bottom-style: double;
+  border-bottom-width: 4px;
+}
+strong, b, .bold {
+  font-weight: func.font-weight("bold");
+}
+
+.italic, em {
+  font-style: italic;
+}
+
+
+.form-label {
+  @include mixins.form-label-text;
+}
+
+
+h1:focus, .h1:focus,
+h2:focus, .h2:focus,
+h3:focus, .h3:focus,
+h4:focus, .h4:focus,
+h5:focus, .h5:focus,
+h6:focus, .h6:focus {
+  outline: none;
+}
+
+h1, .h1{
+  margin-bottom: func.units(4, 'rem');
+  margin-top: 0;
+}
+
+h2, .h2 {
+  margin-top: func.units(6, 'rem');
+  margin-bottom: func.units(4, 'rem');
+  @include mixins.media-breakpoint-up(md) {
+    margin-top: func.units(7, 'rem');
+  }
+}
+h3, .h3{
+  margin-top: func.units(6, 'rem');
+  margin-bottom: func.units(4, 'rem');
+  @include mixins.media-breakpoint-up(md) {
+    margin-top: func.units(7, 'rem');
+  }
+}
+h4, .h4{
+  margin-top: func.units(5, 'rem');
+  margin-bottom:  func.units(4, 'rem');
+}
+h5, .h5{
+  margin-top: func.units(5, 'rem');
+  margin-bottom: 0;
+}
+h6, .h6{
+  margin-top: func.units(5, 'rem');
+  margin-bottom: 0;
+}
+.font-lead{
+  margin-top: func.units(5, 'rem');
+  margin-bottom:  func.units(4, 'rem');
+}
+p, .body-text{
+  margin-top: func.units(4, 'rem');
+  margin-bottom: func.units(4, 'rem');
+}
+h5, .h5, h6, .h6{
+  & + p, & + ul, & + ol{
+    margin-top: 0; // if next sibling after h5 og h6 is a p-tag, no margin-top on p-tag.
+  }
+}
+
+.icon-link{
+  line-height: func.units(vars.$typography-body-text-line-height, 'rem');
+  display: inline-block;
+  
+  .icon-svg{
+    margin-left: func.units(2);
+    width: 1.6rem;
+    fill: currentColor;
+    vertical-align: top;
+    margin-top: calc(func.units(1, 'rem') / 2); // Align icon with text
+  }
+
+  /* Ensure correct coloring of icons in visited links in the Safari browser. */
+  &:not(.function-link):visited .icon-svg {
+    fill: func.color("link-visited");
+  }
+  &:not(.function-link):hover .icon-svg {
+    fill: func.color("link-hover");
+  }
+}
+
+// styling for link in heading
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6{
+  max-width: vars.$typography-text-max-width;
+
+  a, a:hover, a:visited, a:focus{
+    text-decoration: underline;
+  }
+}
+
+// max-width of 66ch for text
+p,
+ul:not(.accordion):not(.accordion-bordered):not(.nav-primary):not(.mainmenu):not(.inline-list):not(.tabnav):not(.tab-list):not(.sidenav-list):not(.sidenav-sub_list):not(.sidemenu):not(.function-link-wrapper):not(.no-max-width):not(.overflow-list),
+ol:not(.accordion):not(.accordion-bordered):not(.sidenav-list):not(.sidemenu):not(.step-indicator):not(.no-max-width){
+  max-width: vars.$typography-text-max-width;
+}
+.font-lead{
+  max-width: vars.$typography-text-max-width;
+}
+
+.form-label, .form-hint, .form-error-message{
+  max-width: vars.$typography-text-max-width;
+}
+.form-checkbox+label, .form-radio+label{
+  max-width: vars.$typography-text-max-width;
+}
+
+.displayheading {
+  &-1 {
+    font-weight: func.font-weight("medium");
+    font-size: func.font-size(vars.$typography-display-1-heading-font-size);
+    line-height: func.units(vars.$typography-display-1-heading-line-height, 'rem');
+    margin-bottom: 0;
+    color: func.color('black');
+    letter-spacing: vars.$typography-display-1-heading-letter-spacing;
+  }
+  &-2 {
+    font-weight: func.font-weight("medium");
+    font-size: func.font-size(vars.$typography-display-2-heading-font-size);
+    line-height: func.units(vars.$typography-display-2-heading-line-height, 'rem');
+    margin-bottom: 0;
+    color: func.color('black');
+    letter-spacing: vars.$typography-display-2-heading-letter-spacing;
+  }
+}
+
+.text-positive {
+  color: func.color("text-positive");
+}
+
+.text-negative {
+  color: func.color("text-negative");
+}
+
+.color-text-black {
+  color: func.color('black');
+}
+
+.field-group-title {
+  font-weight: func.font-weight("normal");
+
+  ~ hr {
+    border: 2px solid func.color('black');
+  }
+}
+
+.uppercase{
+  text-transform: uppercase;
+}
+.lowercase{
+  text-transform: lowercase;
+}
