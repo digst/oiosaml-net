@@ -1,4 +1,5 @@
 using System.Configuration;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DK.Gov.Oio.Saml.AspNet.DependencyInjection;
@@ -54,6 +55,8 @@ public class Startup
 
         DependencyResolver.SetResolver(new ServiceProviderDependencyResolver(provider));
         GlobalFilters.Filters.Add(new HandleErrorAttribute());
+        // Web.config sends X-Frame-Options; MVC's own SAMEORIGIN would conflict with it.
+        AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
         RouteTable.Routes.MapMvcAttributeRoutes();
         RouteTable.Routes.MapRoute("default", "{controller}/{action}/{id}", new { controller = "Home", action = "Index", id = UrlParameter.Optional });
 
