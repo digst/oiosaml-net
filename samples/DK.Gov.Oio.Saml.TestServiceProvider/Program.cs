@@ -49,6 +49,14 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// The sample's pages may not be framed by other sites. The IdP's logout propagation may call /auth/logout from a frame.
+app.Use((context, next) =>
+{
+    if (!context.Request.Path.StartsWithSegments("/auth"))
+        context.Response.Headers.XFrameOptions = "DENY";
+    return next(context);
+});
+
 var provider = new FileExtensionContentTypeProvider();
 
 // The stylesheet's .eot fonts are not in the default mappings.
