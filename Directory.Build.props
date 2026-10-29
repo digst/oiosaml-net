@@ -15,8 +15,13 @@
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <WarningsAsErrors>$(WarningsAsErrors);IDE0005</WarningsAsErrors>
     </PropertyGroup>
-    <!-- CI fails on a package with a known high or critical vulnerability; locally NuGet only warns. -->
+    <!-- CI fails on any warning, but of the known package vulnerabilities only on high or critical ones; locally these only warn. -->
     <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <!-- Without it the IDE0005 check warns, and fails, in every project that doesn't set it. -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
+        <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902</WarningsNotAsErrors>
         <WarningsAsErrors>$(WarningsAsErrors);NU1903;NU1904</WarningsAsErrors>
     </PropertyGroup>
 </Project>
