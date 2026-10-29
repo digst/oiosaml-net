@@ -142,10 +142,12 @@ Each test project writes a `coverage.cobertura.<timestamp>.xml` to `TestResults`
 ## Contributing
 
 - Every change goes through a feature branch named after its Jira issue (`feature/<KEY>-<description>`) and a pull request into `main`.
-- CI builds and runs the tests on Ubuntu for every push and pull request, runs the .NET Framework tests in a separate Windows job, and shows the coverage in the run summary, with the full HTML report as the `coverage-report` artifact.
+- CI builds and runs the tests on Ubuntu for every push and pull request, runs the .NET Framework tests in a separate Windows job, and shows the coverage in the run summary, with the full HTML report as the `coverage-report` artifact. Both jobs must pass before a pull request can be merged. The tests that call NemLog-in's test CA run in a job of their own, which isn't required.
+- CI fails on any compiler or analyzer warning.
 - Package versions are managed centrally in [`Directory.Packages.props`](Directory.Packages.props): a project references a package without a `Version`, and adding a package means adding its `PackageVersion` there.
 - CI fails on an unused `using` directive; check locally with `dotnet build DK.Gov.Oio.Saml.slnx -p:CheckUnusedUsings=true`.
 - CI fails when a package, direct or indirect, has a known high or critical vulnerability; a local build only warns. Dependabot raises alerts and update pull requests for NuGet packages and GitHub Actions.
+- Report vulnerabilities privately, as described in [SECURITY.md](SECURITY.md).
 - Releases are cut by tagging a commit on `main`; the release workflow publishes the NuGet packages. See [releasing](docs/releasing.md).
 
 ## License

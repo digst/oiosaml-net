@@ -42,7 +42,7 @@ jobs:
       - name: Test
         run: >-
           dotnet test --solution DK.Gov.Oio.Saml.slnx --configuration Release --no-build
-          --report-xunit-trx --coverlet
+          --report-xunit-trx --coverlet --filter-not-trait "Category=Integration"
           --results-directory "${{ github.workspace }}/TestResults"
 
       # Publishes a per-test report as a check run, even when tests fail.
@@ -72,6 +72,22 @@ jobs:
         with:
           name: coverage-report
           path: CoverageReport
+
+  # Calls NemLog-in's test CA over the network, so it isn't a required check: the CA sometimes answers too slowly.
+  nemlogin-integration-tests:
+    name: NemLog-in integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Test
+        run: dotnet test --project test/DK.Gov.Oio.Saml.Tests --configuration Release --filter-trait "Category=Integration"
 
   # The .NET Framework tests need Windows; the Ubuntu job builds that project but doesn't run it.
   aspnet-tests:
