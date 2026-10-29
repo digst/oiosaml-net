@@ -9,6 +9,7 @@
         <Copyright>Digitaliseringsstyrelsen</Copyright>
         <PackageProjectUrl>https://github.com/digst/oiosaml-net</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
         <PackageTags>saml saml2 oiosaml nemlogin mitid sso service-provider</PackageTags>
         <PackageReleaseNotes>https://github.com/digst/oiosaml-net/releases</PackageReleaseNotes>
         <!-- SourceLink (built into the .NET SDK) points the debugger at the exact commit on GitHub. -->
@@ -27,5 +28,6 @@
 
     <ItemGroup>
         <None Include="$(MSBuildThisFileDirectory)PACKAGE.md" Pack="true" PackagePath="README.md" Visible="false" />
+        <None Include="$(MSBuildThisFileDirectory)icon.png" Pack="true" PackagePath="icon.png" Visible="false" />
     </ItemGroup>
 </Project>
