@@ -10,7 +10,7 @@ The library covers:
 
 It replaces the legacy `dk.nita.saml20` packages from [OIOSAML.Net](https://github.com/digst/OIOSAML.Net) and follows the [OIOSAML.Java](https://github.com/digst/OIOSAML.Java) reference implementation. Unlike the legacy library it runs on Linux and macOS as well as Windows.
 
-> **Status:** under active development and not yet published to NuGet. Reference the projects from source until packages are available.
+> **Status:** release candidate. The packages are on nuget.org: [`DK.Gov.Oio.Saml.AspNetCore`](https://www.nuget.org/packages/DK.Gov.Oio.Saml.AspNetCore), [`DK.Gov.Oio.Saml.AspNet`](https://www.nuget.org/packages/DK.Gov.Oio.Saml.AspNet) and [`DK.Gov.Oio.Saml`](https://www.nuget.org/packages/DK.Gov.Oio.Saml).
 
 ## What it supports
 
@@ -56,7 +56,7 @@ The sample runs in OIOSAML 3 mode by default. Set `AppSettings:OiosamlProfile` t
 
 ### Add it to your application
 
-1. Reference `DK.Gov.Oio.Saml.AspNetCore`, which brings in the core library.
+1. Add `DK.Gov.Oio.Saml.AspNetCore`, which brings in the core library: `dotnet add package DK.Gov.Oio.Saml.AspNetCore --prerelease`.
 2. Get an OCES organisation certificate for your SP, and download the IdP's metadata from the NemLog-in administration portal.
 3. Configure:
 
