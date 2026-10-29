@@ -6,13 +6,14 @@ The three libraries are published to nuget.org as packages with the same version
 
 **On nuget.org**, as Digitaliseringsstyrelsen's organisation, which already owns `dk.nita.saml20`:
 
-1. **Reserve the ID prefix `DK.Gov.Oio`** for the organisation by writing to account@nuget.org. Packages under the prefix then show as verified, and nobody else can publish one.
-2. **Add a Trusted Publishing policy** (account settings, *Trusted Publishing*): repository owner `digst`, repository `oiosaml-net`, workflow file `release.yml`, environment `nuget`. The workflow then gets a short-lived API key for each release; no key is stored in GitHub.
+1. **Reserve the ID prefix `DK.Gov.Oio`** for the organisation by writing to account@nuget.org. Packages under the prefix then show as verified, and nobody else can publish one. Publishing doesn't have to wait for it; ask for the reservation to cover the packages the organisation has already published.
+2. **Add a Trusted Publishing policy** (account settings, *Trusted Publishing*), signed in as a member of the organisation: package owner the organisation, repository owner `digst`, repository `oiosaml-net`, workflow file `release.yml`, environment `nuget`. The workflow then gets a short-lived API key for each release, and the packages belong to the organisation; no key is stored in GitHub.
+3. **Keep at least one Digitaliseringsstyrelsen employee as an administrator** of the organisation.
 
 **On GitHub**, in the repository settings:
 
 1. **Create the environment `nuget`**, with required reviewers and a deployment rule that allows only tags matching `v*`.
-2. **Add the variable `NUGET_USER`** to it: the nuget.org profile name that owns the Trusted Publishing policy.
+2. **Add the variable `NUGET_USER`** to it: the nuget.org profile name (not the email address) of the member who created the policy. When that member leaves the organisation, another member creates the policy again and `NUGET_USER` changes to their profile name.
 
 ## Versions
 
